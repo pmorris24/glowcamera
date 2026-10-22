@@ -1,0 +1,14 @@
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Main">
+  <a class="logo" href="./">
+    <img src="assets/glow-icon-512.png" alt="" width="32" height="32">
+    <span>Glow Camera</span>
+  </a>
+  <ul>
+    <li><a href="./#how">How it works</a></li>
+    <li><a href="./#features">Features</a></li>
+    <li><a href="privacy.html"{% if include.current == "privacy" %} aria-current="page"{% endif %}>Privacy</a></li>
+    <li><a href="support.html"{% if include.current == "support" %} aria-current="page"{% endif %}>Support</a></li>
+  </ul>
+  <div class="nav-cta">{% include store-button.html size="sm" %}</div>
+</nav>

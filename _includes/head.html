@@ -1,0 +1,17 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ include.title }}</title>
+<meta name="description" content="{{ include.description }}">
+<meta name="theme-color" content="#fffdf8">
+<link rel="canonical" href="https://pmorris24.github.io/glowcamera/{{ include.path }}">
+<meta property="og:title" content="{{ include.title }}">
+<meta property="og:description" content="{{ include.description }}">
+<meta property="og:image" content="https://pmorris24.github.io/glowcamera/assets/glow-icon-512.png">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+<!-- Hides the reveal animations before first paint. If site.js has not started within 3 seconds,
+     everything shows rather than leave the page blank. -->
+<script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches){var h=document.documentElement;h.classList.add("motion");setTimeout(function(){if(!h.dataset.motionReady)h.classList.remove("motion")},3000)}</script>
+<script src="assets/site.js" defer></script>

@@ -3,97 +3,45 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Glow Camera Privacy</title>
-<meta name="description" content="Privacy policy for Glow Camera for Mac. All processing happens on your Mac. Glow collects no data.">
-<meta name="color-scheme" content="light dark">
-<link rel="canonical" href="https://pmorris24.github.io/glowcamera/privacy.html">
-<style>
-  :root {
-    --bg: #fbf8f5;
-    --surface: #ffffff;
-    --surface-2: #f4eee8;
-    --text: #1d1a17;
-    --muted: #645c55;
-    --line: #e7dfd7;
-    --accent: #c4561f;
-    --glow-a: #ffb27a;
-    --glow-b: #ff7e8a;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #141210;
-      --surface: #1d1a17;
-      --surface-2: #26221e;
-      --text: #f3eee9;
-      --muted: #b0a69c;
-      --line: #35302a;
-      --accent: #ffa16b;
-      --glow-a: #ff9a5c;
-      --glow-b: #ff6a7b;
-    }
-  }
-  *, *::before, *::after { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font: 17px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    overflow-wrap: break-word;
-  }
-  a { color: var(--accent); }
-  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
-  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
-  @media (min-width: 720px) { .wrap { padding: 0 32px; } }
-  header.site { border-bottom: 1px solid var(--line); }
-  header.site .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 60px; flex-wrap: wrap; }
-  .brand { display: flex; align-items: center; gap: 10px; font-weight: 650; color: var(--text); text-decoration: none; }
-  .orb { width: 28px; height: 28px; border-radius: 50%; flex: none;
-    background: radial-gradient(circle at 35% 35%, #fff6ee 0 18%, var(--glow-a) 45%, var(--glow-b) 100%); }
-  nav.site { display: flex; gap: 18px; font-size: 15px; }
-  nav.site a { color: var(--muted); text-decoration: none; }
-  nav.site a:hover, nav.site a[aria-current] { color: var(--text); }
-  article { max-width: 720px; padding: 48px 0 56px; }
-  h1 { font-size: clamp(32px, 6vw, 44px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 8px; }
-  .meta { color: var(--muted); margin: 0 0 28px; }
-  h2 { font-size: 24px; line-height: 1.25; margin: 40px 0 10px; }
-  h3 { font-size: 18px; margin: 24px 0 6px; }
-  p, ul, dl { margin: 0 0 14px; }
-  ul { padding-left: 22px; }
-  li { margin-bottom: 6px; }
-  .summary { background: var(--surface-2); border-radius: 14px; padding: 20px; margin: 0 0 8px; }
-  .summary p:last-child, .summary ul:last-child { margin-bottom: 0; }
-  dl.facts { display: grid; grid-template-columns: 1fr; gap: 2px 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 20px; }
-  @media (min-width: 600px) { dl.facts { grid-template-columns: 9.5em 1fr; } }
-  dl.facts dt { font-weight: 600; }
-  dl.facts dd { margin: 0 0 10px; color: var(--muted); }
-  @media (min-width: 600px) { dl.facts dd { margin: 0 0 6px; } }
-  footer.site { border-top: 1px solid var(--line); padding: 28px 0 40px; font-size: 14px; color: var(--muted); }
-  footer.site .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; }
-  footer.site nav { display: flex; gap: 18px; flex-wrap: wrap; }
-  footer.site a { color: var(--muted); }
-</style>
+{% include head.html title="Privacy Policy · Glow Camera" description="How Glow Camera for Mac handles your camera video, face data and diagnostics. Everything runs on your Mac. No data is collected." path="privacy.html" %}
 </head>
 <body>
-<header class="site">
+
+<div class="page-frame">
+  <header class="panel doc-hero-panel">
+    <div class="field" data-field="sunrise" aria-hidden="true"><div class="grain"></div></div>
+    {% include nav.html current="privacy" %}
+    <div class="doc-hero">
+      <div class="inner">
+        <p class="eyebrow">Effective October 22, 2026</p>
+        <h1 class="display">Privacy <span class="soft">policy.</span></h1>
+        <p class="lede">Glow Camera for Mac does all of its work on your Mac. This page explains exactly what it uses, and why.</p>
+      </div>
+    </div>
+  </header>
+</div>
+
+<main id="main">
   <div class="wrap">
-    <a class="brand" href="./"><span class="orb" aria-hidden="true"></span>Glow Camera</a>
-    <nav class="site" aria-label="Main">
-      <a href="./">Home</a>
-      <a href="support.html">Support</a>
-      <a href="privacy.html" aria-current="page">Privacy</a>
-    </nav>
-  </div>
-</header>
+    <div class="doc">
+      <nav class="toc" data-toc aria-label="On this page">
+        <p>On this page</p>
+        <ol>
+          <li><a href="#collect">Data we collect</a></li>
+          <li><a href="#on-device">On-device processing</a></li>
+          <li><a href="#face-data">Face data</a></li>
+          <li><a href="#camera">Camera access</a></li>
+          <li><a href="#settings">Settings and background picture on your Mac</a></li>
+          <li><a href="#diagnostics">Crash reports and diagnostics</a></li>
+          <li><a href="#children">Children</a></li>
+          <li><a href="#changes">Changes to this policy</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ol>
+      </nav>
+      <article class="prose">
 
-<main class="wrap">
-  <article>
-    <h1>Privacy Policy</h1>
-    <p class="meta">Glow Camera for Mac · Effective October 22, 2026</p>
 
-    <div class="summary">
+    <div class="callout dashed">
       <p><strong>The short version:</strong> Glow does all of its work on your Mac. Your camera video and your face data never leave your Mac. Glow does not store them, and it does not send them to us or to anyone else. We collect no data about you.</p>
     </div>
 
@@ -119,20 +67,20 @@
     <h2 id="face-data">Face data</h2>
     <p>Glow needs to know where your face is to place its effects. This section explains exactly what it uses and why.</p>
     <dl class="facts">
-      <dt>What is processed</dt>
-      <dd>Face geometry: the positions of face landmark points (for example the outline of your face, eyes, lips and mouth) in each camera frame. Glow computes these points with Apple's Vision framework, which runs on your Mac.</dd>
-      <dt>Purpose</dt>
-      <dd>Only to place effects on the right part of the image, such as lip color on your lips, whitening on your teeth, and smoothing on your skin.</dd>
-      <dt>Where</dt>
-      <dd>On your Mac only. Face data never leaves your Mac.</dd>
-      <dt>Storage</dt>
-      <dd>Not stored. The points exist in memory only while Glow processes a frame. Then they are discarded.</dd>
-      <dt>Retention</dt>
-      <dd>0 days. Glow keeps no face data after the frame is processed.</dd>
-      <dt>Sharing</dt>
-      <dd>Not shared with us, with Apple or with any third party.</dd>
-      <dt>Other uses</dt>
-      <dd>None. Glow does not use face data to identify you or anyone else, to recognize faces, to track you, for advertising, or for analytics. It does not build a face profile.</dd>
+      <div><dt>What is processed</dt>
+      <dd>Face geometry: the positions of face landmark points (for example the outline of your face, eyes, lips and mouth) in each camera frame. Glow computes these points with Apple's Vision framework, which runs on your Mac.</dd></div>
+      <div><dt>Purpose</dt>
+      <dd>Only to place effects on the right part of the image, such as lip color on your lips, whitening on your teeth, and smoothing on your skin.</dd></div>
+      <div><dt>Where</dt>
+      <dd>On your Mac only. Face data never leaves your Mac.</dd></div>
+      <div><dt>Storage</dt>
+      <dd>Not stored. The points exist in memory only while Glow processes a frame. Then they are discarded.</dd></div>
+      <div><dt>Retention</dt>
+      <dd>0 days. Glow keeps no face data after the frame is processed.</dd></div>
+      <div><dt>Sharing</dt>
+      <dd>Not shared with us, with Apple or with any third party.</dd></div>
+      <div><dt>Other uses</dt>
+      <dd>None. Glow does not use face data to identify you or anyone else, to recognize faces, to track you, for advertising, or for analytics. It does not build a face profile.</dd></div>
     </dl>
 
     <h2 id="camera">Camera access</h2>
@@ -172,17 +120,12 @@
     <p>Questions about privacy? Email Patrick Morris at
       <a href="mailto:{{ site.support_email }}">{{ site.support_email }}</a>.
     </p>
-  </article>
+  
+      </article>
+    </div>
+  </div>
 </main>
 
-<footer class="site">
-  <div class="wrap">
-    <span>© 2026 Patrick Morris</span>
-    <nav aria-label="Footer">
-      <a href="./">Home</a>
-      <a href="support.html">Support</a>
-    </nav>
-  </div>
-</footer>
+{% include footer.html %}
 </body>
 </html>

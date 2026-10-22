@@ -1,0 +1,10 @@
+{%- if site.app_store_id and site.app_store_id != "" -%}
+<a class="store-badge" href="https://apps.apple.com/app/id{{ site.app_store_id }}">
+  <img src="https://tools.applemarketingtools.com/api/badges/download-on-the-mac-app-store/black/en-us" alt="Download Glow Camera on the Mac App Store"{% if include.size == "sm" %} style="height:40px"{% endif %}>
+</a>
+{%- else -%}
+<span class="btn btn-ink btn-soon{% if include.size == "sm" %} btn-sm{% endif %}" role="note">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9L12 2.5zM19 15l.9 2.6 2.6.9-2.6.9L19 22l-.9-2.6-2.6-.9 2.6-.9L19 15z"/></svg>
+  Coming soon to the Mac App Store
+</span>
+{%- endif -%}
