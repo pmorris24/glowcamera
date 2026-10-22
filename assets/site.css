@@ -405,21 +405,30 @@ a {
   line-height: 1.02;
 }
 
-/* The app icon set inline in a sentence, sized to the text. */
+/* Meeting app logos set inline in a sentence, sized to the text. */
 .inline-app {
   font-weight: 600;
   color: var(--ink);
   white-space: nowrap;
 }
 
-/* Inline, not flex, so "Glow" keeps the sentence's baseline. */
-.inline-app img {
+/* Inline, not flex, so the app name keeps the sentence's baseline. */
+.inline-app svg {
   display: inline-block;
-  width: 1.3em;
-  height: 1.3em;
-  margin-right: 0.28em;
-  vertical-align: -0.3em;
-  box-shadow: 0 2px 6px -2px rgb(122 82 0 / 0.45);
+  width: 1.15em;
+  height: 1.15em;
+  margin-right: 0.25em;
+  vertical-align: -0.2em;
+}
+
+/* Zoom's logo is its wordmark, so it stands in for the name. */
+.inline-app svg.wordmark {
+  width: 2.7em;
+  height: 2.7em;
+  /* The negative margins keep the tall box from stretching the line. The box aligns by its
+     margin edge, so this offset centers the wordmark on the text's x-height. */
+  margin: -1em 0;
+  vertical-align: -0.02em;
 }
 
 /* Phones balance the headline on their own; a forced break there leaves one word alone. */
