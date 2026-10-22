@@ -162,8 +162,8 @@ a {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  min-height: 48px;
-  padding: 0 22px;
+  min-height: 46px;
+  padding: 0 21px;
   border-radius: 999px;
   border: 1px solid transparent;
   font: inherit;
@@ -183,7 +183,7 @@ a {
 .btn-ink {
   background: var(--ink);
   color: var(--cream);
-  box-shadow: 0 10px 24px -12px rgb(20 20 20 / 0.7);
+  box-shadow: 0 6px 16px -10px rgb(20 20 20 / 0.6);
 }
 
 .btn-ink:hover {
@@ -386,23 +386,36 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 48px var(--gutter) 0;
+  padding: 56px var(--gutter) 0;
   text-align: center;
 }
 
 @media (min-width: 720px) {
   .hero-copy {
-    padding-top: 76px;
+    padding-top: 104px;
   }
 }
 
+/* Two balanced lines, never edge to edge. */
 .hero-copy .display {
-  font-size: clamp(2.9rem, 8.6vw, 6.4rem);
+  max-width: 12.5em;
+  font-size: clamp(2.5rem, 6.2vw, 5.4rem);
+  font-weight: 580;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+}
+
+/* Phones balance the headline on their own; a forced break there leaves one word alone. */
+@media (max-width: 599px) {
+  .hero-copy .display br {
+    display: none;
+  }
 }
 
 .hero-copy .lede {
-  max-width: 640px;
-  margin: 26px 0 0;
+  max-width: 34em;
+  margin: 28px 0 0;
+  font-size: clamp(1.05rem, 1.4vw, 1.18rem);
 }
 
 .actions {
