@@ -9,7 +9,7 @@
 
   // ---------- Gradient field ----------
   // Each panel with [data-field] gets a low-resolution color field that CSS blurs into soft haze.
-  // Two patches of light drift across it very slowly.
+  // Two patches of light drift across it.
 
   var PALETTES = {
     sunrise: [[0, "#fff8ea"], [0.3, "#ffe7a8"], [0.52, "#ffc477"], [0.72, "#f39a8c"], [0.88, "#b98ad6"], [1, "#3a2440"]],
@@ -68,7 +68,7 @@
 
     function draw(time) {
       if (!image) return;
-      var t = time / 2500 + phase;
+      var t = time / 1000 + phase;
       var data = image.data;
       var aspect = w / h;
       var s1x = 0.3 + Math.sin(t * 0.13) * 0.18, s1y = 0.28 + Math.cos(t * 0.11) * 0.1;
@@ -80,7 +80,7 @@
           var wave = Math.sin(u * 5.2 + t * 0.35) * 0.035 + Math.sin(u * 2.1 - t * 0.21 + v * 3) * 0.03;
           var d1 = (u - s1x) * (u - s1x) * aspect * aspect + (v - s1y) * (v - s1y);
           var d2 = (u - s2x) * (u - s2x) * aspect * aspect + (v - s2y) * (v - s2y);
-          var light = Math.exp(-d1 * 9) * 0.45 + Math.exp(-d2 * 11) * 0.3;
+          var light = Math.exp(-d1 * 9) * 0.55 + Math.exp(-d2 * 11) * 0.4;
           sample(stops, v + wave - light * 0.16, color);
           var i = (row * cols + col) * 4;
           data[i] = Math.min(255, color[0] + light * 34);
@@ -94,8 +94,8 @@
 
     function loop(time) {
       if (!visible) return;
-      // A few frames per second is plenty for a drift this slow.
-      if (time - last > 120) {
+      // About 24 frames per second is plenty for a slow drift.
+      if (time - last > 40) {
         draw(time);
         last = time;
       }
@@ -215,6 +215,30 @@
     });
 
     apply();
+
+    // Until the visitor clicks something, play through the looks so the window shows what Glow does.
+    if (reduceMotion) return;
+    var tour = [
+      { look: "natural", background: "off" },
+      { look: "soft", background: "off" },
+      { look: "studio", background: "blur" },
+      { look: "glam", background: "color" },
+    ];
+    var step = 0, onScreen = false, timer = null;
+    function next() {
+      if (!onScreen || state.comparing) return;
+      step = (step + 1) % tour.length;
+      state.look = tour[step].look;
+      state.background = tour[step].background;
+      apply();
+    }
+    function stopTour() {
+      if (timer) { clearInterval(timer); timer = null; }
+    }
+    timer = setInterval(next, 2600);
+    demo.addEventListener("pointerdown", stopTour, { once: true });
+    demo.addEventListener("keydown", stopTour, { once: true });
+    new IntersectionObserver(function (entries) { onScreen = entries[0].isIntersecting; }).observe(demo);
   }
 
   // ---------- Contents highlight (document pages) ----------
@@ -239,8 +263,9 @@
     if (reduceMotion) return;
     var ticking = false;
     function update() {
-      var p = Math.min(1, window.scrollY / 500);
-      el.style.transform = "translateY(" + ((1 - p) * 26).toFixed(1) + "px) scale(" + (0.97 + p * 0.03).toFixed(3) + ")";
+      var p = Math.min(1, window.scrollY / 520);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.style.transform = "translateY(" + ((1 - eased) * 64).toFixed(1) + "px) scale(" + (0.93 + eased * 0.07).toFixed(3) + ")";
       ticking = false;
     }
     window.addEventListener("scroll", function () {

@@ -418,13 +418,78 @@ a {
   z-index: 1;
   max-width: 1080px;
   margin: 56px auto 0;
-  padding: 0 10px 40px;
+  padding: 0 10px;
+  will-change: transform;
 }
 
 @media (min-width: 720px) {
   .hero-product {
     margin-top: 72px;
     padding: 0 32px;
+  }
+}
+
+/* ---------- Logo strip ---------- */
+
+.logos {
+  position: relative;
+  z-index: 1;
+  padding: 48px 0 50px;
+  text-align: center;
+  color: #fff;
+}
+
+.logos p {
+  margin: 0 0 24px;
+  padding: 0 var(--gutter);
+  font-size: 0.95rem;
+  color: rgb(255 255 255 / 0.85);
+}
+
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: marquee 34s linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.logo-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 30px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: rgb(255 255 255 / 0.92);
+}
+
+.logo-item svg {
+  width: 26px;
+  height: 26px;
+}
+
+/* Zoom's logo is its wordmark. */
+.logo-item svg.wordmark {
+  width: 62px;
+  height: 62px;
+  margin: -18px 0;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
   }
 }
 
@@ -831,9 +896,39 @@ section {
   color: var(--ink-soft);
 }
 
-.menu .on {
+.menu .check {
+  display: inline-block;
+  width: 1em;
+}
+
+/* Without motion, Glow Camera is simply selected. */
+.menu .pick-glow {
   background: #2f6fed;
   color: #fff;
+}
+
+/* With motion, the selection moves from the webcam to Glow Camera as the step appears. */
+html.motion .menu .pick {
+  transition: background-color 0.25s ease, color 0.25s ease;
+  transition-delay: 0.9s;
+}
+
+html.motion .step:not(.in) .menu .pick-webcam {
+  background: #2f6fed;
+  color: #fff;
+}
+
+html.motion .step:not(.in) .menu .pick-glow {
+  background: transparent;
+  color: var(--ink-soft);
+}
+
+html.motion .menu .check {
+  transition: opacity 0.2s ease 1.05s;
+}
+
+html.motion .step:not(.in) .menu .check {
+  opacity: 0;
 }
 
 .menu .label {
@@ -880,6 +975,23 @@ section {
   flex-shrink: 0;
 }
 
+/* With motion, the switch turns on as the step appears. */
+html.motion .switch {
+  transition: background-color 0.3s ease 0.8s;
+}
+
+html.motion .switch::after {
+  transition: transform 0.3s cubic-bezier(0.3, 1.4, 0.5, 1) 0.8s;
+}
+
+html.motion .step:not(.in) .switch {
+  background: #d8d2c6;
+}
+
+html.motion .step:not(.in) .switch::after {
+  transform: translateX(-16px);
+}
+
 .switch::after {
   content: "";
   position: absolute;
@@ -911,114 +1023,6 @@ section {
 
 .app-tile small {
   color: var(--mute);
-}
-
-/* Every meeting app: the problem, and the same camera in each app */
-
-.every-app {
-  display: grid;
-  gap: 48px;
-  align-items: center;
-}
-
-@media (min-width: 1000px) {
-  .every-app {
-    grid-template-columns: 1fr 1.05fr;
-    gap: 72px;
-  }
-}
-
-.every-app .lede + .lede {
-  margin-top: 14px;
-}
-
-.app-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-@media (min-width: 520px) {
-  .app-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.app-card {
-  display: grid;
-  grid-template-columns: 34px 1fr;
-  grid-template-rows: auto auto;
-  column-gap: 12px;
-  align-items: center;
-  padding: 14px 16px;
-  border-radius: 14px;
-  background: #fff;
-  border: 1px solid var(--line);
-  box-shadow: 0 1px 2px rgb(60 30 10 / 0.04);
-}
-
-.app-logo {
-  grid-row: 1 / span 2;
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-}
-
-.app-logo svg {
-  width: 28px;
-  height: 28px;
-}
-
-/* Zoom's logo is a wordmark, so it needs more width than height. */
-.app-logo .wordmark {
-  width: 40px;
-  height: 40px;
-}
-
-.app-card {
-  grid-template-columns: 40px 1fr;
-}
-
-.app-logo {
-  width: 40px;
-}
-
-.app-logo.plain {
-  width: 34px;
-  border-radius: 9px;
-  background: var(--cloud);
-  color: var(--mute);
-}
-
-.app-logo.plain svg {
-  width: 18px;
-  height: 18px;
-}
-
-.app-name {
-  font-weight: 600;
-  font-size: 0.98rem;
-  letter-spacing: -0.01em;
-}
-
-.app-camera {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.82rem;
-  color: var(--mute);
-}
-
-.app-camera::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #34c759;
 }
 
 /* What you can adjust: a plain two-column list */
@@ -1517,18 +1521,25 @@ section {
 /* site.js adds .motion to <html> before first paint. Without JavaScript nothing is hidden. */
 html.motion [data-reveal] {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform: translateY(28px);
+  filter: blur(6px);
+  transition: opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
   transition-delay: var(--delay, 0s);
 }
 
 html.motion [data-reveal].in {
   opacity: 1;
   transform: none;
+  filter: none;
 }
 
 
 @media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+
   .btn,
   .bar i {
     transition: none;
