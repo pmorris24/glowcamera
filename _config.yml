@@ -1,0 +1,16 @@
+# Site settings. Every page reads these values. Edit them here, push to main, and
+# GitHub Pages rebuilds the site in a minute or two.
+
+# The address shown on the site and in the privacy policy.
+# The app's release workflow refuses to build while this is still an example address.
+support_email: glowcamera.support@gmail.com
+
+# The app's Apple ID from App Store Connect (App Information > General Information > Apple ID),
+# for example 6739012345. Leave it empty until the app is live: the site then shows
+# "Coming soon" instead of the App Store badge.
+app_store_id: ""
+
+# Plain pages: no Jekyll theme or layouts.
+theme: null
+exclude:
+  - README.md

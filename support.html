@@ -1,0 +1,228 @@
+---
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glow Camera Support</title>
+<meta name="description" content="Help for Glow Camera for Mac: set up Glow Camera, fix a missing camera in Zoom, Meet or Teams, and contact support.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://pmorris24.github.io/glowcamera/support.html">
+<style>
+  :root {
+    --bg: #fbf8f5;
+    --surface: #ffffff;
+    --surface-2: #f4eee8;
+    --text: #1d1a17;
+    --muted: #645c55;
+    --line: #e7dfd7;
+    --accent: #c4561f;
+    --glow-a: #ffb27a;
+    --glow-b: #ff7e8a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141210;
+      --surface: #1d1a17;
+      --surface-2: #26221e;
+      --text: #f3eee9;
+      --muted: #b0a69c;
+      --line: #35302a;
+      --accent: #ffa16b;
+      --glow-a: #ff9a5c;
+      --glow-b: #ff6a7b;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 17px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    overflow-wrap: break-word;
+  }
+  a { color: var(--accent); }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 720px) { .wrap { padding: 0 32px; } }
+  header.site { border-bottom: 1px solid var(--line); }
+  header.site .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 60px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 650; color: var(--text); text-decoration: none; }
+  .orb { width: 28px; height: 28px; border-radius: 50%; flex: none;
+    background: radial-gradient(circle at 35% 35%, #fff6ee 0 18%, var(--glow-a) 45%, var(--glow-b) 100%); }
+  nav.site { display: flex; gap: 18px; font-size: 15px; }
+  nav.site a { color: var(--muted); text-decoration: none; }
+  nav.site a:hover, nav.site a[aria-current] { color: var(--text); }
+  article { max-width: 760px; padding: 48px 0 56px; }
+  h1 { font-size: clamp(32px, 6vw, 44px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 8px; }
+  .lede { color: var(--muted); margin: 0 0 28px; font-size: 19px; }
+  h2 { font-size: 24px; line-height: 1.25; margin: 40px 0 14px; }
+  p, ul, ol { margin: 0 0 12px; }
+  ul, ol { padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  code, kbd { font: 600 14px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--surface-2);
+    border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; white-space: nowrap; }
+  kbd { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; }
+  .path { font-weight: 600; }
+  details { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; margin: 0 0 12px; }
+  summary { cursor: pointer; padding: 16px 48px 16px 20px; font-weight: 600; list-style: none; position: relative; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; position: absolute; right: 20px; top: 12px; font-size: 24px; font-weight: 400; color: var(--muted); }
+  details[open] summary::after { content: "–"; }
+  details > div { padding: 0 20px 16px; }
+  details > div > :last-child { margin-bottom: 0; }
+  .contact { background: var(--surface-2); border-radius: 14px; padding: 20px; }
+  .contact p:last-child { margin-bottom: 0; }
+  footer.site { border-top: 1px solid var(--line); padding: 28px 0 40px; font-size: 14px; color: var(--muted); }
+  footer.site .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; }
+  footer.site nav { display: flex; gap: 18px; flex-wrap: wrap; }
+  footer.site a { color: var(--muted); }
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="./"><span class="orb" aria-hidden="true"></span>Glow Camera</a>
+    <nav class="site" aria-label="Main">
+      <a href="./">Home</a>
+      <a href="support.html" aria-current="page">Support</a>
+      <a href="privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+    <h1>Support</h1>
+    <p class="lede">Answers to common questions about setting up and using Glow Camera.</p>
+
+    <h2 id="setup">Setup</h2>
+
+    <details id="not-listed" open>
+      <summary>Glow Camera does not appear in Zoom, Meet or Teams</summary>
+      <div>
+        <p>A video app that was already open before Glow Camera was installed or updated cannot see it. Quit the app and open it again:</p>
+        <ol>
+          <li>Switch to the video app and press <kbd>⌘Q</kbd>. Closing its window is not enough.</li>
+          <li>Open the app again.</li>
+          <li>In its camera or video settings, choose <strong>Glow Camera</strong>.</li>
+        </ol>
+        <p>For Google Meet and other apps in Chrome, quit and reopen Chrome. To keep your tabs, type <code>chrome://restart</code> in the address bar and press Return.</p>
+        <p>Glow's window lists the apps that you need to restart.</p>
+        <p>If Glow Camera still does not appear, check that it is turned on (see the next question).</p>
+      </div>
+    </details>
+
+    <details id="turn-on">
+      <summary>How do I turn on Glow Camera?</summary>
+      <div>
+        <p>Glow Camera is a camera extension. macOS asks you to approve it the first time.</p>
+        <ul>
+          <li><strong>macOS 15 Sequoia and later:</strong> open <span class="path">System Settings &gt; General &gt; Login Items &amp; Extensions &gt; Camera Extensions</span> and turn on Glow.</li>
+          <li><strong>macOS 14 Sonoma:</strong> open <span class="path">System Settings &gt; Privacy &amp; Security</span>, scroll down, and allow the system extension from Glow.</li>
+        </ul>
+        <p>Glow must be in your Applications folder. macOS installs camera extensions only from there.</p>
+        <p>Glow's setup checklist has a button that opens the right page in System Settings.</p>
+      </div>
+    </details>
+
+    <details id="starting">
+      <summary>My video app shows "Open the Glow app to show your video"</summary>
+      <div>
+        <p>Glow must be running for Glow Camera to show your video. Open Glow from your Applications folder.</p>
+        <p>To keep Glow ready, turn on <strong>Open Glow when you log in</strong> in Glow &gt; Settings (<kbd>⌘,</kbd>). Glow then waits in the menu bar. You can close its window.</p>
+      </div>
+    </details>
+
+    <details id="after-update">
+      <summary>Glow Camera disappeared after an update</summary>
+      <div>
+        <p>Sometimes macOS does not start the updated Glow Camera. Glow shows "Glow Camera did not start" in its window.</p>
+        <ol>
+          <li>Click <strong>Fix It</strong> in Glow's window.</li>
+          <li>When macOS asks, turn on Glow again under <span class="path">System Settings &gt; General &gt; Login Items &amp; Extensions &gt; Camera Extensions</span>.</li>
+          <li>Quit and reopen your video apps.</li>
+        </ol>
+        <p>Restarting your Mac also fixes it.</p>
+      </div>
+    </details>
+
+    <details id="camera-access">
+      <summary>Camera access is off</summary>
+      <div>
+        <p>Open <span class="path">System Settings &gt; Privacy &amp; Security &gt; Camera</span> and turn on Glow. If Glow is open, you may need to quit it and open it again.</p>
+      </div>
+    </details>
+
+    <h2 id="using">Using Glow</h2>
+
+    <details id="wrong-camera">
+      <summary>Glow uses the wrong camera</summary>
+      <div>
+        <p>Choose the camera you want from the camera menu in Glow's toolbar. Glow Camera then shows video from that camera.</p>
+      </div>
+    </details>
+
+    <details id="video-effects">
+      <summary>My image looks blurred twice, or reactions appear</summary>
+      <div>
+        <p>macOS has its own Video Effects, such as Portrait, Studio Light and Reactions. They can apply on top of Glow's effects.</p>
+        <p>To turn them off for Glow, open <span class="path">Control Center &gt; Video Effects</span> while Glow uses the camera, and turn off the effects you do not want.</p>
+      </div>
+    </details>
+
+    <details id="compare">
+      <summary>Do other people see the original when I use Compare?</summary>
+      <div>
+        <p>No. When you hold <kbd>Space</kbd> or the compare button, only your preview changes. People on the call keep seeing the filtered image. To turn all filters off for everyone, press <kbd>⌘E</kbd>.</p>
+      </div>
+    </details>
+
+    <details id="camera-light">
+      <summary>When is my camera on?</summary>
+      <div>
+        <p>Glow turns your camera on only while the Glow window is open or a video app uses Glow Camera. The rest of the time the camera is off.</p>
+      </div>
+    </details>
+
+    <h2 id="remove">Removing Glow</h2>
+
+    <details id="uninstall">
+      <summary>How do I remove Glow Camera?</summary>
+      <div>
+        <ol>
+          <li>Open Glow &gt; Settings (<kbd>⌘,</kbd>) and click <strong>Remove Glow Camera</strong>.</li>
+          <li>Quit Glow, then delete Glow from your Applications folder.</li>
+        </ol>
+      </div>
+    </details>
+
+    <h2 id="contact">Contact support</h2>
+    <div class="contact">
+      <p>If your question is not answered here, email us. A diagnostics report helps us find the problem faster:</p>
+      <ol>
+        <li>Open Glow &gt; Settings (<kbd>⌘,</kbd>).</li>
+        <li>Click <strong>Copy Diagnostics</strong>. This puts a short text report on your clipboard.</li>
+        <li>Paste the report into an email and tell us what happened.</li>
+      </ol>
+      <p>The report contains your Glow and macOS versions, Mac model, setup state, camera names, recent Glow log messages and crash report summaries. It never contains images. See the <a href="privacy.html#diagnostics">privacy policy</a> for details.</p>
+      <p>Email:
+        <a href="mailto:{{ site.support_email }}?subject=Glow%20Camera%20support">{{ site.support_email }}</a>
+      </p>
+    </div>
+  </article>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>© 2026 Patrick Morris</span>
+    <nav aria-label="Footer">
+      <a href="./">Home</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
