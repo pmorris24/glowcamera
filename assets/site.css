@@ -405,6 +405,23 @@ a {
   line-height: 1.02;
 }
 
+/* The app icon set inline in a sentence, sized to the text. */
+.inline-app {
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* Inline, not flex, so "Glow" keeps the sentence's baseline. */
+.inline-app img {
+  display: inline-block;
+  width: 1.3em;
+  height: 1.3em;
+  margin-right: 0.28em;
+  vertical-align: -0.3em;
+  box-shadow: 0 2px 6px -2px rgb(122 82 0 / 0.45);
+}
+
 /* Phones balance the headline on their own; a forced break there leaves one word alone. */
 @media (max-width: 599px) {
   .hero-copy .display br {
