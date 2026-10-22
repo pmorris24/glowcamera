@@ -1,6 +1,6 @@
-# Glow Camera website
+# Glow website
 
-The public pages for the Glow Camera Mac app, served by GitHub Pages at
+The public pages for the Glow Mac app, served by GitHub Pages at
 https://pmorris24.github.io/glowcamera/
 
 - `index.html`: the product page.
