@@ -148,31 +148,6 @@ a {
   margin: 0;
 }
 
-/* Two tones in one heading: the statement in full ink, the follow-through soft. */
-.soft {
-  opacity: 0.45;
-}
-
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0 0 18px;
-  font-size: 0.82rem;
-  font-weight: 550;
-  letter-spacing: 0.02em;
-  color: var(--mute);
-}
-
-.eyebrow::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, var(--cream), var(--gold) 55%, var(--amber));
-  box-shadow: 0 0 0 3px rgb(255 194 31 / 0.18);
-}
-
 .lede {
   font-size: clamp(1.05rem, 1.6vw, 1.2rem);
   line-height: 1.6;
@@ -438,18 +413,6 @@ a {
   margin-top: 34px;
 }
 
-.fine {
-  margin: 18px 0 0;
-  font-size: 0.9rem;
-  color: var(--ink-soft);
-}
-
-.fine span + span::before {
-  content: "·";
-  margin: 0 8px;
-  opacity: 0.6;
-}
-
 .hero-product {
   position: relative;
   z-index: 1;
@@ -468,66 +431,13 @@ a {
 .works-with {
   position: relative;
   z-index: 1;
-  padding: 44px 0 46px;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px var(--gutter) 44px;
   text-align: center;
-  color: #fff;
-}
-
-.works-with p {
-  margin: 0 0 22px;
-  padding: 0 var(--gutter);
-  font-size: 0.95rem;
-  color: rgb(255 255 255 / 0.85);
-}
-
-/* ---------- Marquee ---------- */
-
-.marquee {
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-}
-
-.marquee-track {
-  display: flex;
-  width: max-content;
-  gap: 12px;
-  animation: marquee 38s linear infinite;
-}
-
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
-}
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 11px 20px;
-  border-radius: 999px;
-  background: rgb(255 255 255 / 0.12);
-  border: 1px solid rgb(255 255 255 / 0.22);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  font-weight: 550;
   font-size: 1rem;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-}
-
-.chip::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--gold);
-  box-shadow: 0 0 10px 1px rgb(255 194 31 / 0.8);
-}
-
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
+  color: rgb(255 255 255 / 0.9);
+  text-wrap: balance;
 }
 
 /* ---------- Product window (the app, drawn in HTML and SVG) ---------- */
@@ -909,6 +819,9 @@ section {
   min-height: 150px;
   display: grid;
   place-items: center;
+  border-radius: var(--radius-card);
+  background: var(--cloud);
+  border: 1px solid var(--line);
 }
 
 .menu {
@@ -1012,74 +925,42 @@ section {
   color: var(--mute);
 }
 
-/* Features */
+/* What you can adjust: a plain two-column list */
 
-.features {
+.feature-list {
   display: grid;
-  gap: 14px;
-  margin-top: 56px;
+  margin: 48px 0 0;
+  border-top: 1px solid var(--line);
 }
 
-@media (min-width: 680px) {
-  .features {
-    grid-template-columns: repeat(2, 1fr);
+@media (min-width: 820px) {
+  .feature-list {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 56px;
   }
 }
 
-@media (min-width: 1020px) {
-  .features {
-    grid-template-columns: repeat(4, 1fr);
+.feature-list > div {
+  display: grid;
+  gap: 4px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+@media (min-width: 560px) {
+  .feature-list > div {
+    grid-template-columns: 150px 1fr;
+    gap: 20px;
   }
 }
 
-.feature {
-  padding: 24px 22px 26px;
-  transition: transform 0.25s ease, background-color 0.25s ease;
-}
-
-.feature:hover {
-  transform: translateY(-3px);
-  background: #fff8e4;
-}
-
-.feature .icon {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  margin-bottom: 18px;
-  border-radius: 12px;
-  background: radial-gradient(circle at 35% 30%, #fffcf2, #ffdd6a 60%, #ffc21f);
-  color: var(--ink);
-  box-shadow: 0 6px 14px -6px rgb(245 174 0 / 0.7);
-}
-
-.feature .icon svg {
-  width: 20px;
-  height: 20px;
-}
-
-.feature h3 {
-  margin: 0 0 6px;
-  font-size: 1.08rem;
+.feature-list dt {
   font-weight: 600;
-  letter-spacing: -0.015em;
 }
 
-.feature p {
+.feature-list dd {
   margin: 0;
   color: var(--ink-soft);
-  font-size: 0.95rem;
-}
-
-.feature.wide {
-  grid-column: 1 / -1;
-}
-
-@media (min-width: 1020px) {
-  .feature.wide {
-    grid-column: span 2;
-  }
 }
 
 /* Privacy panel */
@@ -1111,59 +992,22 @@ section {
   }
 }
 
-.privacy-panel .eyebrow {
-  color: rgb(255 255 255 / 0.8);
-}
-
 .privacy-panel .lede {
   color: rgb(255 255 255 / 0.86);
 }
 
-.glass {
-  border-radius: 20px;
-  padding: 26px;
-  background: var(--glass);
-  border: 1px solid rgb(255 255 255 / 0.14);
-  backdrop-filter: blur(18px) saturate(1.2);
-  -webkit-backdrop-filter: blur(18px) saturate(1.2);
-  box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.6);
-}
-
-.checks {
-  display: grid;
-  gap: 14px;
+.facts-list {
   margin: 0;
   padding: 0;
   list-style: none;
+  border-top: 1px solid rgb(255 255 255 / 0.22);
 }
 
-.checks li {
-  display: grid;
-  grid-template-columns: 26px 1fr;
-  gap: 12px;
-  align-items: start;
-}
-
-.checks li::before {
-  content: "";
-  width: 22px;
-  height: 22px;
-  margin-top: 1px;
-  border-radius: 50%;
-  background: rgb(255 194 31 / 0.18)
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffd75a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><path d='M5 12.5l4.5 4.5L19 7.5'/></svg>")
-    center / 13px no-repeat;
-  box-shadow: inset 0 0 0 1px rgb(255 194 31 / 0.45);
-}
-
-.checks strong {
-  display: block;
-  font-weight: 600;
-}
-
-.checks span {
-  color: rgb(255 255 255 / 0.72);
-  font-size: 0.94rem;
+.facts-list li {
+  padding: 16px 0;
+  border-bottom: 1px solid rgb(255 255 255 / 0.22);
+  font-size: 1.02rem;
+  color: rgb(255 255 255 / 0.92);
 }
 
 .text-link {
@@ -1176,7 +1020,11 @@ section {
 
 .split {
   display: grid;
-  gap: 48px;
+  gap: 64px;
+}
+
+.split .faq {
+  margin-top: 34px;
 }
 
 @media (min-width: 960px) {
@@ -1194,21 +1042,18 @@ section {
   gap: 10px;
 }
 
-.specs li {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  padding: 16px 18px;
+.specs {
+  border-top: 1px solid var(--line);
+  gap: 0;
 }
 
-.specs svg {
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
-  color: var(--amber);
+.specs li {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
 }
 
 .specs strong {
+  display: block;
   font-weight: 600;
 }
 
@@ -1586,12 +1431,8 @@ html.motion [data-reveal].in {
   transform: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track {
-    animation: none;
-  }
 
-  .feature,
+@media (prefers-reduced-motion: reduce) {
   .btn,
   .bar i {
     transition: none;

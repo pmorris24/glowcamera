@@ -8,8 +8,8 @@
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // ---------- Gradient field ----------
-  // Each panel with [data-field] gets two canvases: a low-resolution color field that CSS blurs
-  // into soft haze, and a dot texture on top whose dots grow where the light is brightest.
+  // Each panel with [data-field] gets a low-resolution color field that CSS blurs into soft haze.
+  // Two patches of light drift across it very slowly.
 
   var PALETTES = {
     sunrise: [[0, "#fff8ea"], [0.3, "#ffe7a8"], [0.52, "#ffc477"], [0.72, "#f39a8c"], [0.88, "#b98ad6"], [1, "#3a2440"]],
@@ -45,17 +45,12 @@
   function mountField(host) {
     var stops = compile(PALETTES[host.dataset.field] || PALETTES.sunrise);
     var haze = document.createElement("canvas");
-    var dots = document.createElement("canvas");
     haze.className = "haze";
-    host.prepend(dots);
     host.prepend(haze);
     var hctx = haze.getContext("2d");
-    var dctx = dots.getContext("2d");
-    if (!hctx || !dctx) return;
+    if (!hctx) return;
 
-    var panel = host.parentElement;
     var w = 0, h = 0, cell = 14, cols = 0, rows = 0, image = null, visible = true, last = 0;
-    var pointer = { x: 0.5, y: 0.3, strength: 0 };
     var color = [0, 0, 0];
     var phase = Math.random() * 10;
 
@@ -69,21 +64,15 @@
       haze.width = cols;
       haze.height = rows;
       image = hctx.createImageData(cols, rows);
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
-      dots.width = Math.round(w * dpr);
-      dots.height = Math.round(h * dpr);
-      dctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
     function draw(time) {
       if (!image) return;
-      var t = time / 1000 + phase;
+      var t = time / 2500 + phase;
       var data = image.data;
       var aspect = w / h;
-      // Two soft suns that drift slowly; the pointer pulls the light toward it.
       var s1x = 0.3 + Math.sin(t * 0.13) * 0.18, s1y = 0.28 + Math.cos(t * 0.11) * 0.1;
       var s2x = 0.72 + Math.cos(t * 0.09) * 0.16, s2y = 0.45 + Math.sin(t * 0.12) * 0.12;
-      dctx.clearRect(0, 0, w, h);
       for (var row = 0; row < rows; row++) {
         var v = (row + 0.5) / rows;
         for (var col = 0; col < cols; col++) {
@@ -91,21 +80,13 @@
           var wave = Math.sin(u * 5.2 + t * 0.35) * 0.035 + Math.sin(u * 2.1 - t * 0.21 + v * 3) * 0.03;
           var d1 = (u - s1x) * (u - s1x) * aspect * aspect + (v - s1y) * (v - s1y);
           var d2 = (u - s2x) * (u - s2x) * aspect * aspect + (v - s2y) * (v - s2y);
-          var dp = (u - pointer.x) * (u - pointer.x) * aspect * aspect + (v - pointer.y) * (v - pointer.y);
-          var light = Math.exp(-d1 * 9) * 0.55 + Math.exp(-d2 * 11) * 0.4 + Math.exp(-dp * 26) * pointer.strength * 0.6;
+          var light = Math.exp(-d1 * 9) * 0.45 + Math.exp(-d2 * 11) * 0.3;
           sample(stops, v + wave - light * 0.16, color);
           var i = (row * cols + col) * 4;
           data[i] = Math.min(255, color[0] + light * 34);
           data[i + 1] = Math.min(255, color[1] + light * 26);
           data[i + 2] = Math.min(255, color[2] + light * 12);
           data[i + 3] = 255;
-          // Dots: brighter where the light is, with a slow shimmer so the texture feels alive.
-          var shimmer = Math.sin(col * 1.7 + row * 2.3 + t * 1.3) * 0.5 + 0.5;
-          var size = (light * 1.5 + shimmer * 0.55) * (cell * 0.16);
-          if (size > 0.45) {
-            dctx.fillStyle = "rgba(255,255,255," + (0.1 + light * 0.32 + shimmer * 0.06).toFixed(3) + ")";
-            dctx.fillRect(col * cell + cell / 2 - size / 2, row * cell + cell / 2 - size / 2, size, size);
-          }
         }
       }
       hctx.putImageData(image, 0, 0);
@@ -113,9 +94,8 @@
 
     function loop(time) {
       if (!visible) return;
-      // About 24 frames per second is plenty for a slow drift.
-      if (time - last > 40) {
-        pointer.strength *= 0.96;
+      // A few frames per second is plenty for a drift this slow.
+      if (time - last > 120) {
         draw(time);
         last = time;
       }
@@ -127,15 +107,6 @@
     window.addEventListener("resize", function () { resize(); draw(performance.now()); });
 
     if (reduceMotion) return;
-
-    if (panel) {
-      panel.addEventListener("pointermove", function (e) {
-        var r = host.getBoundingClientRect();
-        pointer.x = (e.clientX - r.left) / r.width;
-        pointer.y = (e.clientY - r.top) / r.height;
-        pointer.strength = Math.min(1, pointer.strength + 0.12);
-      });
-    }
 
     new IntersectionObserver(function (entries) {
       var was = visible;
