@@ -8,7 +8,7 @@ support_email: glowcamera.support@gmail.com
 # The app's Apple ID from App Store Connect (App Information > General Information > Apple ID),
 # for example 6739012345. Leave it empty until the app is live: the site then shows
 # "Coming soon" instead of the App Store badge.
-app_store_id: ""
+app_store_id: "6825955554"
 
 # Plain pages: no Jekyll theme or layouts.
 theme: null
