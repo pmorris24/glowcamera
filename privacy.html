@@ -14,7 +14,7 @@
     <div class="doc-hero">
       <div class="inner">
         <h1 class="display">Privacy policy</h1>
-        <p class="lede">Effective October 22, 2026. Covers the Glow app for Mac and the Glow virtual camera it installs.</p>
+        <p class="lede">Effective November 11, 2026. Covers the Glow app for Mac and the Glow virtual camera it installs.</p>
       </div>
     </div>
   </header>
@@ -30,7 +30,7 @@
           <li><a href="#on-device">On-device processing</a></li>
           <li><a href="#face-data">Face data</a></li>
           <li><a href="#camera">Camera access</a></li>
-          <li><a href="#settings">Settings and background picture on your Mac</a></li>
+          <li><a href="#settings">Settings and background images on your Mac</a></li>
           <li><a href="#diagnostics">Crash reports and diagnostics</a></li>
           <li><a href="#children">Children</a></li>
           <li><a href="#changes">Changes to this policy</a></li>
@@ -41,26 +41,26 @@
 
 
     <div class="callout dashed">
-      <p><strong>The short version:</strong> Glow does all of its work on your Mac. Your camera video and your face data never leave your Mac. Glow does not store them, and it does not send them to us or to anyone else. We collect no data about you.</p>
+      <p><strong>The short version:</strong> Glow does all of its work on your Mac. Your camera video and face data are processed on your Mac. Glow does not record your video or save face geometry. When you capture an empty background, Glow saves that reference image locally for reuse. Glow does not upload it. We collect no data about you.</p>
     </div>
 
     <p>This policy explains how the Glow app for Mac ("Glow", "the app") handles information. In this policy, "we" and "us" mean the developer of Glow. It covers the Glow app and the Glow virtual camera that the app adds to your Mac.</p>
 
     <h2 id="collect">Data we collect</h2>
-    <p>None. Glow does not collect, store or share personal data. In detail:</p>
+    <p>None. Glow does not collect or transmit your personal data. Settings and background images are stored locally as described below. In detail:</p>
     <ul>
       <li>No account and no sign-in.</li>
       <li>No analytics and no tracking.</li>
       <li>No advertising and no advertising identifiers.</li>
-      <li>No third-party SDKs or third-party code.</li>
+      <li>No advertising or analytics SDKs.</li>
       <li>No servers. Glow does not send your video, images, face data or settings anywhere.</li>
     </ul>
     <p>When you buy Glow, Apple handles the purchase. We do not receive your name or contact details from the App Store.</p>
 
     <h2 id="on-device">On-device processing</h2>
     <p>Glow reads frames from your camera, applies the effects you choose, and sends the result to the Glow virtual camera on your Mac. Video apps such as Zoom, Google Meet, Microsoft Teams and FaceTime then read Glow like any other camera.</p>
-    <p>All of this happens on your Mac, in memory. This includes skin smoothing, lighting, face shape, makeup, teeth whitening, eye brightening, and background blur and replacement. Glow does not save camera frames to disk. Each frame is discarded after it is shown in the preview and passed to Glow.</p>
-    <p>To blur or replace your background, Glow finds the outline of the person in each frame with Apple's Vision framework, on your Mac. This outline (a person mask) is used only for that frame, in memory, and then discarded. It is not stored or shared.</p>
+    <p>All of this happens on your Mac, in memory. This includes skin smoothing, lighting, face shape, makeup, teeth whitening, eye brightening, and background blur and replacement. Glow does not record the video stream. The one exception to transient camera-frame processing is the empty-room reference image you explicitly capture, described below.</p>
+    <p>To blur or replace your background, Glow finds the outline of the person with Apple's Vision framework or the bundled Background Matting V2 model. Both run on your Mac. Captured-background mode uses your saved empty-room reference to improve edges around hair and headphones. The computed person mask and foreground remain in memory and are not saved or shared.</p>
     <p>After that, the video app you use decides what happens to the video. For example, it may send it to the people on your call. That app's own privacy policy applies to it.</p>
 
     <h2 id="face-data">Face data</h2>
@@ -87,10 +87,12 @@
     <p>Glow turns your camera on only while the Glow window is open or a video app is using Glow. The rest of the time the camera is off.</p>
     <p>You can turn camera access off at any time in System Settings &gt; Privacy &amp; Security &gt; Camera.</p>
 
-    <h2 id="settings">Settings and background picture on your Mac</h2>
+    <h2 id="settings">Settings and background images on your Mac</h2>
     <p>Glow saves your settings, such as your chosen look and slider positions, on your Mac using the standard macOS preferences system (UserDefaults). Settings do not include camera images or face data.</p>
     <p>If you choose a picture to replace your background, Glow saves a copy of that picture in its own folder on your Mac, so it is still there after a restart. Glow uses it only as your background.</p>
-    <p>Settings and the background picture stay on your Mac. Glow does not send them anywhere.</p>
+    <p>When you choose <strong>Capture empty background</strong>, Glow saves one lossless reference image for that camera in its local Application Support folder. Step out of view during the countdown so the image contains only the room. Glow restores the reference after restarts and updates, and keeps separate references for different cameras. The files are restricted to your user account and excluded from system backups.</p>
+    <p>A new capture replaces the saved reference for that camera. <strong>Forget background</strong> deletes it and returns to automatic background processing. Otherwise, the reference remains on your Mac until you remove the app’s data. Camera movement or lighting changes can require a new capture.</p>
+    <p>Settings, background pictures, and captured references stay on your Mac. Glow does not upload them, and Copy Diagnostics never includes them.</p>
 
     <h2 id="diagnostics">Crash reports and diagnostics</h2>
     <h3>Crash and hang reports</h3>
