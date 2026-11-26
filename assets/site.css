@@ -1584,3 +1584,386 @@ html.motion [data-reveal].in {
     transition: none;
   }
 }
+
+/* ---------- Hero: the Glow island at the notch of a Mac screen ---------- */
+
+.mac {
+  padding: 10px;
+  border-radius: 22px;
+  background: linear-gradient(#1b1a1f, #0e0d11);
+  box-shadow: var(--shadow-window);
+  border: 1px solid rgb(255 255 255 / 0.3);
+  text-align: left;
+}
+
+.screen {
+  position: relative;
+  overflow: hidden;
+  border-radius: 13px;
+  aspect-ratio: 16 / 10;
+  min-height: 430px;
+  isolation: isolate;
+}
+
+.wallpaper {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(circle at 18% 28%, #ffd28f 0, transparent 42%),
+    radial-gradient(circle at 82% 18%, #f28ba8 0, transparent 40%),
+    radial-gradient(circle at 62% 95%, #8b6ad8 0, transparent 50%),
+    linear-gradient(135deg, #f7b46d, #b85fa5 55%, #3b2a70);
+}
+
+/* Windows behind the island, so the glass has something to show through. */
+.wallpaper i {
+  position: absolute;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px -18px rgb(0 0 0 / 0.5);
+}
+
+.wallpaper i:nth-child(1) {
+  left: 5%;
+  top: 16%;
+  width: 46%;
+  height: 72%;
+  background: linear-gradient(#2a2733, #1d1b23);
+}
+
+.wallpaper i:nth-child(2) {
+  right: 4%;
+  top: 24%;
+  width: 40%;
+  height: 54%;
+  background: rgb(255 255 255 / 0.82);
+}
+
+.wallpaper i:nth-child(3) {
+  left: 38%;
+  top: 46%;
+  width: 22%;
+  height: 26%;
+  background: #ffdd6a;
+}
+
+.edge-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: 13px;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow: inset 0 0 0 7px rgb(255 250 240 / 0.96), inset 0 0 46px 22px rgb(255 242 222 / 0.75);
+  transition: opacity 0.5s ease;
+}
+
+.screen[data-edge] .edge-glow {
+  opacity: 1;
+}
+
+.menubar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+  padding: 0 14px;
+  font-size: 12px;
+  color: rgb(255 255 255 / 0.92);
+  background: rgb(0 0 0 / 0.12);
+}
+
+.mb-left,
+.mb-right {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.mb-left b {
+  font-weight: 650;
+}
+
+.island {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 2;
+  width: min(640px, calc(100% - 24px));
+  transform: translateX(-50%);
+  padding-bottom: 16px;
+  border-radius: 0 0 30px 30px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-top: 0;
+  /* Black where it meets the notch, then Liquid Glass. */
+  background: linear-gradient(180deg, #000 0, #000 30px, rgb(0 0 0 / 0) 70px), rgb(22 16 30 / 0.5);
+  -webkit-backdrop-filter: blur(26px) saturate(170%);
+  backdrop-filter: blur(26px) saturate(170%);
+  box-shadow: 0 26px 50px -22px rgb(0 0 0 / 0.65);
+  color: #fff;
+  font-size: 12px;
+}
+
+.island svg {
+  width: 15px;
+  height: 15px;
+}
+
+.island-head {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: 30px;
+  padding: 0 16px;
+}
+
+.island-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.island-brand .live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 450;
+  color: rgb(255 255 255 / 0.6);
+}
+
+.island-brand .live::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #33d16a;
+  box-shadow: 0 0 6px #33d16a;
+}
+
+.notch {
+  width: 150px;
+  height: 30px;
+}
+
+.island-tools {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  opacity: 0.85;
+}
+
+.island-body {
+  display: grid;
+  grid-template-columns: 236px 1fr;
+  gap: 14px;
+  padding: 10px 16px 0;
+}
+
+.island .portrait {
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+}
+
+.island .portrait svg {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.preview-tools {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: flex;
+  gap: 6px;
+}
+
+.round {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  background: rgb(0 0 0 / 0.42);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.round svg {
+  width: 14px;
+  height: 14px;
+}
+
+.round[aria-pressed="true"] {
+  color: #7fb3ff;
+}
+
+.filters-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  font-weight: 550;
+}
+
+.island-switch {
+  position: relative;
+  width: 32px;
+  height: 18px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.25);
+}
+
+.island-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s ease;
+}
+
+.island-switch.on {
+  background: #3b82f6;
+}
+
+.island-switch.on::after {
+  transform: translateX(14px);
+}
+
+.chips {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 28px;
+  padding: 0 6px;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  background: rgb(255 255 255 / 0.1);
+  color: #fff;
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.chip svg {
+  width: 12px;
+  height: 12px;
+}
+
+.chip[aria-pressed="true"] {
+  background: rgb(59 130 246 / 0.45);
+  border-color: #6aa5ff;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px 4px;
+  margin-top: 12px;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 550;
+  cursor: pointer;
+}
+
+.tile-dot {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.12);
+  transition: background 0.2s ease;
+}
+
+.tile[aria-pressed="true"] .tile-dot {
+  background: #3b82f6;
+}
+
+.tile-name {
+  min-height: 2.3em;
+  line-height: 1.15;
+  text-align: center;
+}
+
+@media (max-width: 719px) {
+  .screen {
+    aspect-ratio: auto;
+    min-height: 0;
+    padding-bottom: 40px;
+  }
+
+  .island {
+    position: relative;
+    width: calc(100% - 16px);
+    margin-top: -30px;
+  }
+
+  .notch {
+    width: 70px;
+  }
+
+  .island-tools,
+  .island-brand .live {
+    display: none;
+  }
+
+  .island-body {
+    grid-template-columns: 1fr;
+  }
+
+  .mb-left span,
+  .mb-right {
+    display: none;
+  }
+}
+
+/* The camera in the notch, next to Glow. */
+.notch {
+  display: grid;
+  place-items: center;
+}
+
+.notch::after {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #3a4a6a 0, #12151d 55%, #050608 100%);
+  box-shadow: 0 0 0 1.5px #15161a;
+}

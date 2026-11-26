@@ -1,4 +1,4 @@
-// Glow Camera website: the live gradient field, reveal on scroll, the interactive app window,
+// Glow Camera website: the live gradient field, reveal on scroll, the interactive notch island,
 // and the contents highlight on the document pages. Everything works without this file;
 // it only adds motion and the demo.
 (function () {
@@ -153,15 +153,25 @@
     var portrait = demo.querySelector(".portrait");
     var svg = portrait && portrait.querySelector("svg");
     if (!svg) return;
-    var state = { look: "natural", background: "off", comparing: false };
+    var screen = demo.querySelector(".screen");
+    var state = { look: "natural", background: "off", comparing: false, mirrored: true, effects: {} };
+    demo.querySelectorAll("[data-effect]").forEach(function (t) {
+      state.effects[t.dataset.effect] = t.getAttribute("aria-pressed") === "true";
+    });
     var q = function (sel) { return svg.querySelector(sel); };
     var texture = q("#texture"), skinBlur = q("#skin-blur feGaussianBlur"), warmth = q("#warmth"),
       lips = q("#lips"), keyLight = q("#key-light"), bgBlur = q("#bg-blur feGaussianBlur"),
       backdrop = q("#backdrop"), room = q("#room");
 
     function apply() {
+      var fx = state.effects;
       var s = state.comparing ? ORIGINAL : LOOKS[state.look];
-      var bg = state.comparing ? "off" : state.background;
+      // The effect tiles: Background blurs the room, Studio Light adds a key light,
+      // Edge Light lights the screen's edge and the face, Center Stage frames closer.
+      var bg = state.comparing ? "off" : (fx.background ? "blur" : state.background);
+      if (!state.comparing && (fx.studio || fx.edge)) {
+        s = Object.assign({}, s, { light: Math.max(s.light, fx.studio ? 0.85 : 0.5), bright: s.bright + (fx.edge ? 0.25 : 0) });
+      }
       texture.style.opacity = (0.85 * (1 - s.smooth)).toFixed(2);
       skinBlur.setAttribute("stdDeviation", (s.smooth * 1.4).toFixed(2));
       svg.style.filter = "brightness(" + (1 + s.bright * 0.22).toFixed(3) + ") saturate(" + (1 + s.warm * 0.25).toFixed(3) + ")";
@@ -173,6 +183,14 @@
       backdrop.style.opacity = bg === "color" ? "1" : "0";
       room.style.opacity = bg === "color" ? "0" : "1";
       portrait.toggleAttribute("data-original", state.comparing);
+      var scale = !state.comparing && fx.center ? 1.18 : 1;
+      svg.style.transform = "scale(" + (state.mirrored ? -scale : scale) + "," + scale + ")";
+      if (screen) screen.toggleAttribute("data-edge", !!fx.edge);
+      demo.querySelectorAll("[data-effect]").forEach(function (t) {
+        t.setAttribute("aria-pressed", String(!!fx[t.dataset.effect]));
+      });
+      var mirror = demo.querySelector("[data-mirror]");
+      if (mirror) mirror.setAttribute("aria-pressed", String(state.mirrored));
 
       demo.querySelectorAll("[data-look]").forEach(function (b) {
         b.setAttribute("aria-pressed", String(b.dataset.look === state.look));
@@ -181,6 +199,7 @@
         b.setAttribute("aria-pressed", String(b.dataset.background === state.background));
       });
       demo.querySelectorAll("[data-value]").forEach(function (row) {
+        if (!row.querySelector("i")) return;
         var v = LOOKS[state.look][row.dataset.value];
         row.querySelector("i").style.setProperty("--v", Math.round(v * 100) + "%");
         row.querySelector("[data-percent]").textContent = Math.round(v * 100) + "%";
@@ -192,12 +211,16 @@
     demo.addEventListener("click", function (e) {
       var look = e.target.closest("[data-look]");
       var bg = e.target.closest("[data-background]");
+      var effect = e.target.closest("[data-effect]");
       if (look) { state.look = look.dataset.look; apply(); }
       if (bg) { state.background = bg.dataset.background; apply(); }
+      if (effect) { state.effects[effect.dataset.effect] = !state.effects[effect.dataset.effect]; apply(); }
+      if (e.target.closest("[data-mirror]")) { state.mirrored = !state.mirrored; apply(); }
     });
 
     // Compare: hold to see the original, like the app (also Space while the demo has focus).
     var compare = demo.querySelector("[data-compare]");
+    if (!compare) { apply(); return; }
     function setComparing(on) {
       state.comparing = on;
       compare.setAttribute("aria-pressed", String(on));
@@ -219,17 +242,17 @@
     // Until the visitor clicks something, play through the looks so the window shows what Glow does.
     if (reduceMotion) return;
     var tour = [
-      { look: "natural", background: "off" },
-      { look: "soft", background: "off" },
-      { look: "studio", background: "blur" },
-      { look: "glam", background: "color" },
+      { look: "natural", effects: { skin: true } },
+      { look: "soft", effects: { skin: true, edge: true } },
+      { look: "studio", effects: { skin: true, studio: true, background: true } },
+      { look: "glam", effects: { skin: true, makeup: true, center: true, background: true } },
     ];
     var step = 0, onScreen = false, timer = null;
     function next() {
       if (!onScreen || state.comparing) return;
       step = (step + 1) % tour.length;
       state.look = tour[step].look;
-      state.background = tour[step].background;
+      state.effects = Object.assign({}, tour[step].effects);
       apply();
     }
     function stopTour() {

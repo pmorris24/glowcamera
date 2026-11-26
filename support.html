@@ -48,7 +48,7 @@
           <li>In its camera or video settings, choose <strong>Glow</strong>.</li>
         </ol>
         <p>For Google Meet and other apps in Chrome, quit and reopen Chrome. To keep your tabs, type <code>chrome://restart</code> in the address bar and press Return.</p>
-        <p>Glow's window lists the apps that you need to restart.</p>
+        <p>The Glow island at the top of your screen lists the apps that you need to restart.</p>
         <p>If Glow still does not appear, check that it is turned on (see the next question).</p>
       </div>
     </details>
@@ -70,16 +70,16 @@
       <summary>My video app shows "Open the Glow app to show your video"</summary>
       <div class="answer">
         <p>Glow must be running for Glow to show your video. Open Glow from your Applications folder.</p>
-        <p>To keep Glow ready, turn on <strong>Open Glow when you log in</strong> in Glow &gt; Settings (<kbd>⌘,</kbd>). Glow then waits in the menu bar. You can close its window.</p>
+        <p>To keep Glow ready, turn on <strong>Open Glow when you log in</strong> in Glow's Settings (click the gear in the island, or choose <strong>Settings…</strong> from the Glow menu bar icon). Glow then waits at the notch and in the menu bar.</p>
       </div>
     </details>
 
     <details id="after-update">
       <summary>The Glow camera disappeared after an update</summary>
       <div class="answer">
-        <p>Sometimes macOS does not start the updated Glow camera. Glow shows "The Glow camera did not start" in its window.</p>
+        <p>Sometimes macOS does not start the updated Glow camera. The light on the Glow island turns orange, and the island shows "The Glow camera did not start".</p>
         <ol>
-          <li>Click <strong>Fix It</strong> in Glow's window.</li>
+          <li>Move the pointer to the notch to open the island, then click <strong>Fix It</strong>.</li>
           <li>When macOS asks, turn on Glow again under <span class="path">System Settings &gt; General &gt; Login Items &amp; Extensions &gt; Camera Extensions</span>.</li>
           <li>Quit and reopen your video apps.</li>
         </ol>
@@ -101,29 +101,72 @@
     <details id="wrong-camera">
       <summary>Glow uses the wrong camera</summary>
       <div class="answer">
-        <p>Choose the camera you want from the camera menu in Glow's toolbar. Glow then shows video from that camera.</p>
+        <p>Open the island at the notch and click the camera button at its top right. Choose the camera you want. Glow then shows video from that camera.</p>
       </div>
     </details>
 
     <details id="video-effects">
       <summary>My image looks blurred twice, or reactions appear</summary>
       <div class="answer">
-        <p>macOS has its own Video Effects, such as Portrait, Studio Light and Reactions. They can apply on top of Glow's effects.</p>
+        <p>macOS has its own Video Effects, such as Portrait, Studio Light and Reactions. They can apply on top of Glow's effects. Glow has its own version of each one, so you can turn the macOS ones off and use Glow's instead.</p>
         <p>To turn them off for Glow, open <span class="path">Control Center &gt; Video Effects</span> while Glow uses the camera, and turn off the effects you do not want.</p>
+      </div>
+    </details>
+
+    <details id="island">
+      <summary>Where is Glow's window?</summary>
+      <div class="answer">
+        <p>Glow has no window. It lives in an island around the notch at the top of your screen, next to the camera. On a Mac without a notch, the island is at the middle of the menu bar.</p>
+        <ul>
+          <li>Move the pointer onto the notch to open the island. Click inside it, or click the pin, to keep it open.</li>
+          <li>Click outside the island or press <kbd>Esc</kbd> to close it.</li>
+          <li>The light on the closed island is gray when Glow is ready, green during a call, and orange when Glow needs you.</li>
+          <li>Click a round effect tile to turn that effect on and show its controls. Click the tile again to hide them.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details id="mirror">
+      <summary>My preview is mirrored, or my screen looks reversed</summary>
+      <div class="answer">
+        <p>Click the mirror button on the island's preview to change it. Mirroring changes only your preview. People on the call always see you the right way round.</p>
+        <p>While Presenter Overlay is on, the preview is not mirrored, so the text on your screen reads the right way.</p>
+      </div>
+    </details>
+
+    <details id="presenter-overlay">
+      <summary>Presenter Overlay asks to record my screen</summary>
+      <div class="answer">
+        <p>Presenter Overlay puts your screen in your video, so macOS asks once for permission to record it. Turn on Glow under <span class="path">System Settings &gt; Privacy &amp; Security &gt; Screen &amp; System Audio Recording</span>, then click <strong>Try Again</strong> in the Presenter Overlay controls.</p>
+        <p>Glow records only your main display, and only while Presenter Overlay is on and the camera is in use. Glow's own island is left out.</p>
+      </div>
+    </details>
+
+    <details id="reactions">
+      <summary>How do I start a reaction with my hands?</summary>
+      <div class="answer">
+        <p>Turn on Reactions, then hold a gesture in front of the camera for about half a second: a heart with both hands for hearts, a thumbs up or down, a peace sign for balloons, two peace signs for confetti, two thumbs up for fireworks, two thumbs down for rain, or rock on with both hands for lasers. You can also click a reaction in the Reactions controls.</p>
+      </div>
+    </details>
+
+    <details id="edge-light">
+      <summary>Edge Light is not on my external display</summary>
+      <div class="answer">
+        <p>In the Edge Light controls, choose the display in the <strong>Display</strong> menu, or choose <strong>All Displays</strong>. Automatic uses the built-in display. Edge Light shows only while a camera is in use.</p>
       </div>
     </details>
 
     <details id="compare">
       <summary>Do other people see the original when I use Compare?</summary>
       <div class="answer">
-        <p>No. When you hold <kbd>Space</kbd> or the compare button, only your preview changes. People on the call keep seeing the filtered image. To turn all filters off for everyone, press <kbd>⌘E</kbd>.</p>
+        <p>No. When you hold the compare button on the island's preview, or hold <kbd>Space</kbd> while the island is open, only your preview changes. People on the call keep seeing the filtered image. To turn all filters off for everyone, press <kbd>⌘E</kbd>.</p>
       </div>
     </details>
 
     <details id="camera-light">
       <summary>When is my camera on?</summary>
       <div class="answer">
-        <p>Glow turns your camera on only while the Glow window is open or a video app uses Glow. The rest of the time the camera is off.</p>
+        <p>Glow turns your camera on only while the Glow island is open (and for a few seconds after you close it) or a video app uses Glow. The rest of the time the camera is off.</p>
       </div>
     </details>
     </div>
@@ -135,7 +178,7 @@
       <summary>How do I remove the Glow camera?</summary>
       <div class="answer">
         <ol>
-          <li>Open Glow &gt; Settings (<kbd>⌘,</kbd>) and click <strong>Remove Camera Extension</strong>.</li>
+          <li>Open Glow's Settings (click the gear in the island, or choose <strong>Settings…</strong> from the Glow menu bar icon) and click <strong>Remove Camera Extension</strong>.</li>
           <li>Quit Glow, then delete Glow from your Applications folder.</li>
         </ol>
       </div>
@@ -146,7 +189,7 @@
     <div class="dashed contact-card">
       <p>If your question is not answered here, email us. A diagnostics report helps us find the problem faster:</p>
       <ol>
-        <li>Open Glow &gt; Settings (<kbd>⌘,</kbd>).</li>
+        <li>Open Glow's Settings (click the gear in the island, or choose <strong>Settings…</strong> from the Glow menu bar icon).</li>
         <li>Click <strong>Copy Diagnostics</strong>. This puts a short text report on your clipboard.</li>
         <li>Paste the report into an email and tell us what happened.</li>
       </ol>

@@ -13,7 +13,7 @@ How it is built:
 
 - `_includes/`: the shared head, navigation, App Store button and footer.
 - `assets/site.css` and `assets/site.js`: the design (colors from the app icon), the live gradient
-  panels, reveal on scroll, and the interactive app window on the home page. Without JavaScript,
+  panels, reveal on scroll, and the interactive notch island on the home page. Without JavaScript,
   every page still shows all of its content.
 - `assets/fonts/`: Geist, self-hosted under the SIL Open Font License (`OFL.txt`), so pages make
   no requests to font services.

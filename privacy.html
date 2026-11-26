@@ -14,7 +14,7 @@
     <div class="doc-hero">
       <div class="inner">
         <h1 class="display">Privacy policy</h1>
-        <p class="lede">Effective November 11, 2026. Covers the Glow app for Mac and the Glow virtual camera it installs.</p>
+        <p class="lede">Effective November 26, 2026. Covers the Glow app for Mac and the Glow virtual camera it installs.</p>
       </div>
     </div>
   </header>
@@ -29,7 +29,10 @@
           <li><a href="#collect">Data we collect</a></li>
           <li><a href="#on-device">On-device processing</a></li>
           <li><a href="#face-data">Face data</a></li>
+          <li><a href="#hand-data">Hand gestures</a></li>
           <li><a href="#camera">Camera access</a></li>
+          <li><a href="#screen">Screen recording for Presenter Overlay</a></li>
+          <li><a href="#edge-light">Edge Light</a></li>
           <li><a href="#settings">Settings and background images on your Mac</a></li>
           <li><a href="#diagnostics">Crash reports and diagnostics</a></li>
           <li><a href="#children">Children</a></li>
@@ -59,7 +62,7 @@
 
     <h2 id="on-device">On-device processing</h2>
     <p>Glow reads frames from your camera, applies the effects you choose, and sends the result to the Glow virtual camera on your Mac. Video apps such as Zoom, Google Meet, Microsoft Teams and FaceTime then read Glow like any other camera.</p>
-    <p>All of this happens on your Mac, in memory. This includes skin smoothing, lighting, face shape, makeup, teeth whitening, eye brightening, and background blur and replacement. Glow does not record the video stream. The one exception to transient camera-frame processing is the empty-room reference image you explicitly capture, described below.</p>
+    <p>All of this happens on your Mac, in memory. This includes skin smoothing, lighting, face shape, makeup, teeth whitening, eye brightening, background blur and replacement, Studio Light, Center Stage framing, Reactions and Presenter Overlay. Glow does not record the video stream. The one exception to transient camera-frame processing is the empty-room reference image you explicitly capture, described below.</p>
     <p>To blur or replace your background, Glow finds the outline of the person with Apple's Vision framework or the bundled Background Matting V2 model. Both run on your Mac. Captured-background mode uses your saved empty-room reference to improve edges around hair and headphones. The computed person mask and foreground remain in memory and are not saved or shared.</p>
     <p>After that, the video app you use decides what happens to the video. For example, it may send it to the people on your call. That app's own privacy policy applies to it.</p>
 
@@ -82,10 +85,22 @@
       <dd>None. Glow does not use face data to identify you or anyone else, to recognize faces, to track you, for advertising, or for analytics. It does not build a face profile.</dd></div>
     </dl>
 
+    <h2 id="hand-data">Hand gestures</h2>
+    <p>When Reactions is on, Glow looks for hand gestures, such as a thumbs up or a heart made with both hands, to start a reaction. It finds the positions of hand joint points in camera frames with Apple's Vision framework, on your Mac.</p>
+    <p>Glow uses these points only to recognize the gesture. They exist in memory only while a frame is processed, then they are discarded. They are not stored, not shared, and not used to identify you. When Reactions is off, Glow does not look for hands.</p>
+
     <h2 id="camera">Camera access</h2>
     <p>macOS asks for your permission before Glow can use your camera. Glow uses the camera only to make the filtered video for the preview and for Glow.</p>
-    <p>Glow turns your camera on only while the Glow window is open or a video app is using Glow. The rest of the time the camera is off.</p>
+    <p>Glow turns your camera on only while the Glow island at the top of your screen is open (and for a few seconds after you close it) or a video app is using Glow. The rest of the time the camera is off.</p>
     <p>You can turn camera access off at any time in System Settings &gt; Privacy &amp; Security &gt; Camera.</p>
+
+    <h2 id="screen">Screen recording for Presenter Overlay</h2>
+    <p>Presenter Overlay puts your screen in your video. For this, macOS asks for your permission before Glow can record your screen. Glow asks only when you turn Presenter Overlay on.</p>
+    <p>Glow records your main display only while Presenter Overlay is on and the camera is in use. Glow's own windows are left out. Each screen image is used in memory to make the next video frame, then it is discarded. Glow does not save or upload screen images. As with the rest of your video, the video app you use decides what happens to the result.</p>
+    <p>You can turn screen recording off at any time in System Settings &gt; Privacy &amp; Security &gt; Screen &amp; System Audio Recording.</p>
+
+    <h2 id="edge-light">Edge Light</h2>
+    <p>When Edge Light is on, Glow checks about twice a second whether another app is using a camera, so the light can come on during calls in those apps too. Glow reads only whether a camera is in use. It does not read video from those apps or record which apps they are.</p>
 
     <h2 id="settings">Settings and background images on your Mac</h2>
     <p>Glow saves your settings, such as your chosen look and slider positions, on your Mac using the standard macOS preferences system (UserDefaults). Settings do not include camera images or face data.</p>
