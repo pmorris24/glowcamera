@@ -297,12 +297,76 @@
     update();
   }
 
+  // ---------- Dithered edges between dark and light sections ----------
+  // Squares of the two colors, more of the next color toward its side, like a printed halftone.
+
+  function mountDither(canvas) {
+    var down = canvas.classList.contains("dither-down");
+    var dark = [13, 13, 18], light = [248, 250, 251], gold = [255, 194, 31];
+    function draw() {
+      var cell = 6;
+      var w = Math.ceil(canvas.clientWidth / cell), h = Math.ceil(canvas.clientHeight / cell);
+      if (!w || !h) return;
+      canvas.width = w;
+      canvas.height = h;
+      var ctx = canvas.getContext("2d");
+      var img = ctx.createImageData(w, h);
+      var seed = 7;
+      function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+      for (var y = 0; y < h; y++) {
+        var t = (y + 0.5) / h;
+        var lightShare = down ? Math.pow(t, 1.6) : Math.pow(1 - t, 1.6);
+        for (var x = 0; x < w; x++) {
+          var r = rnd();
+          var c = r < lightShare ? light : dark;
+          // A few gold squares where the two meet.
+          if (Math.abs(r - lightShare) < 0.012) c = gold;
+          var i = (y * w + x) * 4;
+          img.data[i] = c[0]; img.data[i + 1] = c[1]; img.data[i + 2] = c[2]; img.data[i + 3] = 255;
+        }
+      }
+      ctx.putImageData(img, 0, 0);
+    }
+    draw();
+    var last = canvas.clientWidth;
+    window.addEventListener("resize", function () {
+      if (canvas.clientWidth !== last) { last = canvas.clientWidth; draw(); }
+    });
+  }
+
+  // ---------- The pixel lamp in the closing section ----------
+
+  function mountPixels(host) {
+    var art = [
+      "...gg...",
+      "..gGGg..",
+      ".gGWWGg.",
+      ".gGWWGg.",
+      "..gGGg..",
+      "...ss...",
+      "...ss...",
+      "..bbbb..",
+    ];
+    var colors = { g: "#b37800", G: "#ffc21f", W: "#fff1c4", s: "#3a3b4a", b: "#272835" };
+    var cells = host.querySelectorAll("i");
+    art.join("").split("").forEach(function (ch, i) {
+      if (!cells[i] || ch === ".") return;
+      cells[i].setAttribute("data-p", ch);
+      cells[i].style.setProperty("--c", colors[ch]);
+      cells[i].style.setProperty("--d", (Math.random() * 3).toFixed(2) + "s");
+    });
+  }
+
   function start() {
     document.querySelectorAll("[data-field]").forEach(mountField);
     mountReveals();
     document.querySelectorAll("[data-demo]").forEach(mountDemo);
     document.querySelectorAll("[data-toc]").forEach(mountToc);
     document.querySelectorAll("[data-rise]").forEach(mountRise);
+    document.querySelectorAll("canvas[data-dither], [data-dither]").forEach(function (el) {
+      if (el.tagName === "CANVAS") mountDither(el);
+    });
+    document.querySelectorAll(".pixels").forEach(mountPixels);
     root.dataset.motionReady = "1";
   }
 

@@ -12,8 +12,10 @@ Change the support email or add the App Store app ID in `_config.yml`, then push
 How it is built:
 
 - `_includes/`: the shared head, navigation, App Store button and footer.
-- `assets/site.css` and `assets/site.js`: the design (colors from the app icon), the live gradient
-  panels and reveal on scroll.
+- `assets/site.css` and `assets/site.js`: the design. A dark page with large, light type, hairline
+  grids, a section list that stays on the left, dithered edges between dark and light sections, and
+  Glow's gold from the app icon as the accent. The script draws the dither edges and the pixel lamp
+  and reveals sections on scroll.
 - `assets/island.js`: the home page demo. A MacBook with Glow's island at the notch: point at the
   notch to open it, try the looks and effects, and watch the Zoom window change. A cursor tours it
   until the visitor moves the pointer. Without JavaScript,

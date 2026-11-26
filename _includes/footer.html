@@ -1,15 +1,24 @@
 <footer class="footer">
-  <div class="wrap footer-grid">
-    <a class="logo" href="./">
-      <img src="assets/glow-icon-512.png" alt="" width="32" height="32">
-      <span>Glow</span>
-    </a>
-    <nav aria-label="Footer">
-      <a href="./#features">Features</a>
-      <a href="privacy.html">Privacy policy</a>
-      <a href="support.html">Support</a>
-      <a href="mailto:{{ site.support_email }}">{{ site.support_email }}</a>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="logo" href="./">
+        <img src="assets/glow-icon-512.png" alt="" width="28" height="28">
+        <span>Glow</span>
+      </a>
+      <p>© {{ site.time | date: "%Y" }} Glow. All rights reserved.</p>
+    </div>
+    <nav class="footer-col" aria-label="Product">
+      <p class="eyebrow">Product</p>
+      <a href="./#how">How it works</a>
+      <a href="./#features">Effects</a>
+      <a href="./#get">Get Glow</a>
     </nav>
-    <p class="small">© {{ site.time | date: "%Y" }} Glow. Mac, FaceTime and Mac App Store are trademarks of Apple Inc., registered in the U.S. and other countries. Zoom, Google Meet, Microsoft Teams, Slack, Webex, Discord and OBS Studio are trademarks of their owners. Glow is not affiliated with or endorsed by any of them.</p>
+    <nav class="footer-col" aria-label="Help">
+      <p class="eyebrow">Help</p>
+      <a href="support.html">Support</a>
+      <a href="privacy.html">Privacy policy</a>
+      <a href="mailto:{{ site.support_email }}">Email us</a>
+    </nav>
+    <p class="footer-legal">Mac, FaceTime and Mac App Store are trademarks of Apple Inc., registered in the U.S. and other countries. Zoom, Google Meet, Microsoft Teams, Slack, Webex, Discord and OBS Studio are trademarks of their owners. Glow is not affiliated with or endorsed by any of them.</p>
   </div>
 </footer>
