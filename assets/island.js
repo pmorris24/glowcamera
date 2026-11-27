@@ -484,6 +484,31 @@
       tourTimers.push(setTimeout(play, t + 1500));
     }
 
+    // Effect cards on the page open the demo with their effect: window.glowIsland.show("edge").
+    window.glowIsland = {
+      show: function (what) {
+        stopTour();
+        demo.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+        setTimeout(function () {
+          setOpen(true);
+          state.pinned = true;
+          if (what.indexOf("look:") === 0) {
+            state.look = what.slice(5);
+            state.filters = true;
+            Object.assign(state.v, LOOKS[state.look]);
+            state.on.skin = true; state.on.makeup = true;
+            state.selected = null;
+          } else {
+            state.on[what] = true;
+            state.selected = what;
+            if (what === "reactions") setTimeout(function () { burst("confetti"); }, 500);
+          }
+          buildDrawer();
+          render();
+        }, reduceMotion ? 0 : 650);
+      },
+    };
+
     render();
     hint.querySelector(".hint-text").textContent = finePointer ? "Point at the notch" : "Tap the notch";
     if (touring) {

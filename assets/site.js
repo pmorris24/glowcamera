@@ -297,41 +297,79 @@
     update();
   }
 
-  // ---------- Dithered edges between dark and light sections ----------
-  // Squares of the two colors, more of the next color toward its side, like a printed halftone.
+  // ---------- Animated character breaks between dark and light sections ----------
+  // A band of text characters that crumbles from one color into the other. Some characters change
+  // every frame, so the edge always moves a little.
 
   function mountDither(canvas) {
     var down = canvas.classList.contains("dither-down");
-    var dark = [13, 13, 18], light = [248, 250, 251], gold = [255, 194, 31];
-    function draw() {
-      var cell = 6;
-      var w = Math.ceil(canvas.clientWidth / cell), h = Math.ceil(canvas.clientHeight / cell);
-      if (!w || !h) return;
-      canvas.width = w;
-      canvas.height = h;
+    var chars = ".:-=+*#%@";
+    var cols = 0, rows = 0, cellW = 7, cellH = 11, grid = [], visible = false;
+    function setup() {
+      var dpr = Math.min(2, window.devicePixelRatio || 1);
+      canvas.width = Math.round(canvas.clientWidth * dpr);
+      canvas.height = Math.round(canvas.clientHeight * dpr);
+      cols = Math.ceil(canvas.clientWidth / cellW);
+      rows = Math.ceil(canvas.clientHeight / cellH);
+      grid = [];
+      for (var i = 0; i < cols * rows; i++) grid.push({ r: Math.random(), c: Math.floor(Math.random() * chars.length) });
+      draw(0);
+    }
+    function draw(t) {
+      var dpr = canvas.width / Math.max(1, canvas.clientWidth);
       var ctx = canvas.getContext("2d");
-      var img = ctx.createImageData(w, h);
-      var seed = 7;
-      function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
-      for (var y = 0; y < h; y++) {
-        var t = (y + 0.5) / h;
-        var lightShare = down ? Math.pow(t, 1.6) : Math.pow(1 - t, 1.6);
-        for (var x = 0; x < w; x++) {
-          var r = rnd();
-          var c = r < lightShare ? light : dark;
-          // A few gold squares where the two meet.
-          if (Math.abs(r - lightShare) < 0.012) c = gold;
-          var i = (y * w + x) * 4;
-          img.data[i] = c[0]; img.data[i + 1] = c[1]; img.data[i + 2] = c[2]; img.data[i + 3] = 255;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.fillStyle = "#0d0d12";
+      ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+      ctx.font = "600 10px ui-monospace, Menlo, monospace";
+      ctx.textBaseline = "top";
+      var light = "#f8fafb", dark = "#0d0d12";
+      for (var y = 0; y < rows; y++) {
+        // 0 at the dark side, 1 at the light side; the band breaks up around the middle.
+        var f = down ? (y + 0.5) / rows : 1 - (y + 0.5) / rows;
+        var wave = Math.sin(t / 900 + y) * 0.04;
+        for (var x = 0; x < cols; x++) {
+          var cell = grid[y * cols + x];
+          var v = f + wave + (cell.r - 0.5) * 0.55;
+          var px = x * cellW, py = y * cellH;
+          if (v > 0.62) {
+            ctx.fillStyle = light;
+            ctx.fillRect(px, py, cellW + 0.5, cellH + 0.5);
+          } else if (v > 0.32) {
+            // The crumbling edge: characters, light on dark, a few in gold.
+            ctx.fillStyle = cell.r > 0.93 ? "#ffc54d" : "rgba(248,250,251," + (0.25 + (v - 0.32) * 2).toFixed(2) + ")";
+            ctx.fillText(chars[cell.c], px, py);
+          } else if (v > 0.2 && cell.r > 0.8) {
+            ctx.fillStyle = "rgba(248,250,251,0.18)";
+            ctx.fillText(".", px, py);
+          }
         }
       }
-      ctx.putImageData(img, 0, 0);
     }
-    draw();
-    var last = canvas.clientWidth;
-    window.addEventListener("resize", function () {
-      if (canvas.clientWidth !== last) { last = canvas.clientWidth; draw(); }
-    });
+    var last = 0;
+    function loop(t) {
+      if (!visible) return;
+      if (t - last > 90) {
+        // A few characters change, and a few cells drift between sides.
+        for (var i = 0; i < grid.length * 0.06; i++) {
+          var g = grid[Math.floor(Math.random() * grid.length)];
+          g.c = Math.floor(Math.random() * chars.length);
+          g.r = Math.min(1, Math.max(0, g.r + (Math.random() - 0.5) * 0.25));
+        }
+        draw(t);
+        last = t;
+      }
+      requestAnimationFrame(loop);
+    }
+    setup();
+    var lastW = canvas.clientWidth;
+    window.addEventListener("resize", function () { if (canvas.clientWidth !== lastW) { lastW = canvas.clientWidth; setup(); } });
+    if (reduceMotion) return;
+    new IntersectionObserver(function (e) {
+      var was = visible;
+      visible = e[0].isIntersecting;
+      if (visible && !was) requestAnimationFrame(loop);
+    }).observe(canvas);
   }
 
   // ---------- The pixel lamp in the closing section ----------
@@ -404,6 +442,13 @@
 
     var ramp = " .:-=+*#%@";
     var visible = true;
+    // The pointer is a light: where it points, the portrait turns smooth and warm.
+    var pointer = null, pointerFade = 0;
+    canvas.parentElement.addEventListener("pointermove", function (e) {
+      var r = canvas.getBoundingClientRect();
+      pointer = { u: (e.clientX - r.left) / r.width, v: (e.clientY - r.top) / r.height };
+    });
+    canvas.parentElement.addEventListener("pointerleave", function () { pointer = null; });
     function draw(t) {
       var dpr = Math.min(2, window.devicePixelRatio || 1);
       var W = Math.round(canvas.clientWidth * dpr), H = Math.round(canvas.clientHeight * dpr);
@@ -417,13 +462,20 @@
       // One cycle: 2 s before, a 1.6 s sweep, 3 s of glow, a 1 s fade back.
       var cycle = 7600, k = reduceMotion ? 5000 : t % cycle;
       var sweep = k < 2000 ? -0.2 : k < 3600 ? (k - 2000) / 1600 * 1.4 - 0.2 : k < 6600 ? 1.2 : 1.2 - (k - 6600) / 1000 * 1.4;
-      var glowing = k >= 2800 && k < 7100;
+      pointerFade += ((pointer ? 1 : 0) - pointerFade) * 0.15;
+      if (pointer || pointerFade > 0.02) sweep = -0.2;
+      var glowing = pointer ? true : k >= 2800 && k < 7100;
       if (tabs.length === 2) { tabs[0].classList.toggle("on", !glowing); tabs[1].classList.toggle("on", glowing); }
       for (var r = 0; r < rows; r++) {
         for (var c = 0; c < cols; c++) {
           var i = r * cols + c, u = c / cols;
           // How much light has reached this column, soft at the band's edge.
           var g = Math.max(0, Math.min(1, (sweep - u) / 0.18 + 0.5));
+          if (pointer || pointerFade > 0.02) {
+            var px = pointer ? pointer.u : 0.5, py = pointer ? pointer.v : 0.5;
+            var du = u - px, dv = (r / rows - py) * 0.75;
+            g = Math.max(g, pointerFade * Math.exp(-(du * du + dv * dv) / 0.035));
+          }
           var v = lum[i] + noise[i] * 0.32 * (1 - g);
           v = v * (1 + 0.35 * g) + 0.06 * g;
           v = Math.max(0, Math.min(0.999, v));
@@ -458,6 +510,10 @@
       if (el.tagName === "CANVAS") mountDither(el);
     });
     document.querySelectorAll(".pixels").forEach(mountPixels);
+    document.addEventListener("click", function (e) {
+      var go = e.target.closest("[data-try]");
+      if (go && window.glowIsland) window.glowIsland.show(go.dataset.try);
+    });
     document.querySelectorAll("[data-ascii]").forEach(mountAscii);
     root.dataset.motionReady = "1";
   }

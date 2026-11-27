@@ -2373,3 +2373,154 @@ kbd {
     padding: 112px 32px;
   }
 }
+
+/* ---------- Hover: cards light up, the others step back ---------- */
+
+.dither {
+  height: 92px;
+  image-rendering: auto;
+}
+
+.cards:hover .card:not(:hover) h3,
+.cards:hover .card:not(:hover) p,
+.cards:hover .card:not(:hover) .card-icon {
+  opacity: 0.45;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: background 0.25s ease;
+}
+
+.card h3,
+.card p,
+.card-icon {
+  transition: opacity 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.card:hover {
+  background: var(--ink-3);
+}
+
+.card:hover .card-icon {
+  color: var(--gold);
+  border-color: rgb(255 197 77 / 0.4);
+  transform: translateY(-2px);
+}
+
+.card p:last-of-type {
+  flex: 1;
+}
+
+/* A field of dots drifts in at the corner of the card under the pointer. */
+.card-dots {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 60%;
+  height: 60%;
+  background-image: radial-gradient(rgb(255 197 77 / 0.55) 1px, transparent 1.6px);
+  background-size: 14px 14px;
+  -webkit-mask-image: radial-gradient(circle at 100% 100%, #000 0%, transparent 70%);
+  mask-image: radial-gradient(circle at 100% 100%, #000 0%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  animation: drift 6s linear infinite;
+}
+
+.card:hover .card-dots {
+  opacity: 1;
+}
+
+@keyframes drift {
+  to {
+    background-position: -28px -28px;
+  }
+}
+
+.card-go {
+  position: relative;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  height: 40px;
+  min-width: 40px;
+  margin-top: 28px;
+  padding: 0 13px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--ink-3);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, gap 0.25s ease, padding 0.25s ease;
+}
+
+.card-go span {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: max-width 0.3s ease;
+}
+
+.card:hover .card-go {
+  gap: 8px;
+  padding: 0 16px;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.card:hover .card-go span {
+  max-width: 60px;
+}
+
+/* Steps and logo cells react too. */
+.step {
+  transition: background 0.25s ease;
+}
+
+.step:hover {
+  background: var(--ink-2);
+}
+
+.step:hover .snippet {
+  border-color: rgb(255 197 77 / 0.35);
+}
+
+.snippet {
+  transition: border-color 0.25s ease, transform 0.3s ease;
+}
+
+.step:hover .snippet {
+  transform: translateY(-3px);
+}
+
+.logo-cell {
+  position: relative;
+}
+
+.logo-cell > * {
+  transition: transform 0.25s ease;
+}
+
+.logo-cell:hover > * {
+  transform: translateY(-2px);
+}
+
+.btn svg {
+  transition: transform 0.2s ease;
+}
+
+.btn:hover svg {
+  transform: translateX(2px);
+}
+
+.hero-art {
+  cursor: crosshair;
+}
