@@ -280,13 +280,8 @@
         refreshDrawerValues();
       } else if (effect) {
         var k = effect.dataset.effect;
-        if (state.selected === k) {
-          state.selected = null;
-        } else {
-          state.on[k] = true;
-          state.selected = k;
-          if (k === "reactions") burst("hearts");
-        }
+        // A tile opens and closes the effect's controls. The drawer's switch turns it on.
+        state.selected = state.selected === k ? null : k;
         buildDrawer();
       } else if (t.closest("[data-mirror]")) {
         state.mirrored = !state.mirrored;
@@ -457,14 +452,22 @@
       [700, function () { click(); q('[data-look="soft"]').click(); }],
       [1100, function () { moveGhostTo(q('[data-effect="studio"]'), 0.5, 0.3); }],
       [700, function () { click(); q('[data-effect="studio"]').click(); }],
+      [600, function () { var t = q('[data-toggle="studio"]'); if (t) moveGhostTo(t); }],
+      [500, function () { var t = q('[data-toggle="studio"]'); if (t && !t.checked) { click(); t.click(); } }],
       [1600, function () { moveGhostTo(q('[data-effect="background"]'), 0.5, 0.3); }],
       [700, function () { click(); q('[data-effect="background"]').click(); }],
+      [600, function () { var t = q('[data-toggle="background"]'); if (t) moveGhostTo(t); }],
+      [500, function () { var t = q('[data-toggle="background"]'); if (t && !t.checked) { click(); t.click(); } }],
       [1500, function () { moveGhostTo(q('[data-effect="reactions"]'), 0.5, 0.3); }],
       [700, function () { click(); q('[data-effect="reactions"]').click(); }],
+      [600, function () { var t = q('[data-toggle="reactions"]'); if (t) moveGhostTo(t); }],
+      [500, function () { var t = q('[data-toggle="reactions"]'); if (t && !t.checked) { click(); t.click(); } }],
       [1300, function () { var b = q('[data-react="confetti"]'); if (b) moveGhostTo(b); }],
       [600, function () { click(); burst("confetti"); }],
       [1700, function () { moveGhostTo(q('[data-effect="presenter"]'), 0.5, 0.3); }],
       [700, function () { click(); q('[data-effect="presenter"]').click(); }],
+      [600, function () { var t = q('[data-toggle="presenter"]'); if (t) moveGhostTo(t); }],
+      [500, function () { var t = q('[data-toggle="presenter"]'); if (t && !t.checked) { click(); t.click(); } }],
       [2200, function () { ghost.style.transform = "translate(" + screen.clientWidth * 0.5 + "px," + screen.clientHeight * 0.92 + "px)"; }],
       [800, function () { setOpen(false); }],
       [1600, function () {
