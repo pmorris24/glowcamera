@@ -2527,3 +2527,32 @@ kbd {
 .hero-art {
   cursor: crosshair;
 }
+
+/* ---------- Product: full page width, centered, before the section list starts ---------- */
+
+.showcase {
+  padding: 112px var(--gutter) 128px;
+  border-bottom: 1px solid var(--line);
+}
+
+.showcase .sec-head {
+  max-width: 720px;
+  margin: 0 auto 64px;
+  text-align: center;
+}
+
+.showcase .lede {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.showcase .hero-product {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+@media (min-width: 720px) {
+  .showcase {
+    padding: 128px 48px 144px;
+  }
+}
