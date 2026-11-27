@@ -395,105 +395,120 @@
     });
   }
 
-  // ---------- The hero portrait, drawn in characters ----------
-  // "Before": gray, rough characters. A band of light passes over and leaves the portrait smooth and
-  // warm, which is what Glow does to a camera picture.
+  // ---------- The hero: Glow's "g" in characters, radiating light ----------
+  // The letter is drawn in bright characters. Around it, a halo and rings of light travel outward.
+  // The pointer is a second light: the rays lean toward it and it brightens what it touches.
 
   function mountAscii(canvas) {
-    var source = document.querySelector(".vid-preview svg");
-    if (!source) return;
-    var tabs = canvas.parentElement.querySelectorAll(".hero-tabs span");
-    var clone = source.cloneNode(true);
-    clone.removeAttribute("style");
-    clone.setAttribute("width", "800");
-    clone.setAttribute("height", "500");
-    clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    var img = new Image();
-    var cols = 104, rows = 46, lum = null, noise = [];
-    img.onload = function () {
-      var off = document.createElement("canvas");
-      off.width = cols; off.height = rows;
-      var octx = off.getContext("2d");
-      // Crop to the head and shoulders (4:3), then sharpen, so eyes and mouth read as characters.
-      octx.drawImage(img, 140, 70, 520, 390, 0, 0, cols, rows);
-      var data = octx.getImageData(0, 0, cols, rows).data;
-      var raw = new Float32Array(cols * rows);
-      for (var i = 0; i < cols * rows; i++) {
-        raw[i] = (0.299 * data[i * 4] + 0.587 * data[i * 4 + 1] + 0.114 * data[i * 4 + 2]) / 255;
-        noise.push(Math.random() - 0.5);
-      }
-      lum = new Float32Array(cols * rows);
-      for (var y = 0; y < rows; y++) {
-        for (var x = 0; x < cols; x++) {
-          var sum = 0, n = 0;
-          for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) {
-            var yy = y + dy, xx = x + dx;
-            if (yy >= 0 && yy < rows && xx >= 0 && xx < cols) { sum += raw[yy * cols + xx]; n++; }
-          }
-          var v = raw[y * cols + x];
-          v = v + (v - sum / n) * 1.8;
-          // Darker middle tones keep the wall quiet; light areas stay dense.
-          lum[y * cols + x] = Math.pow(Math.max(0, Math.min(1, v)), 1.7);
-        }
-      }
-      start();
-    };
-    img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(clone));
+    var cols = 96, rows = 52;
+    var cover = null, dist = null;
+    var halo = " .,:;-=+*";
+    var pointer = null, pointerFade = 0, visible = true;
 
-    var ramp = " .:-=+*#%@";
-    var visible = true;
-    // The pointer is a light: where it points, the portrait turns smooth and warm.
-    var pointer = null, pointerFade = 0;
-    canvas.parentElement.addEventListener("pointermove", function (e) {
+    // Draw the letter large, then measure how much of each character cell it covers.
+    function build() {
+      var sx = 8, sy = 14;
+      var off = document.createElement("canvas");
+      off.width = cols * sx; off.height = rows * sy;
+      var c = off.getContext("2d");
+      c.fillStyle = "#fff";
+      c.textAlign = "center";
+      c.textBaseline = "alphabetic";
+      var size = off.height * 0.95;
+      // Inter's one-story g matches the app icon.
+      c.font = "600 " + size + "px 'Inter', sans-serif";
+      // A lowercase g: its x-height sits in the middle, its tail hangs below.
+      c.fillText("g", off.width / 2, off.height * 0.62);
+      var data = c.getImageData(0, 0, off.width, off.height).data;
+      cover = new Float32Array(cols * rows);
+      for (var y = 0; y < rows; y++) for (var x = 0; x < cols; x++) {
+        var sum = 0;
+        for (var yy = 0; yy < sy; yy++) for (var xx = 0; xx < sx; xx++) {
+          sum += data[((y * sy + yy) * off.width + (x * sx + xx)) * 4 + 3];
+        }
+        cover[y * cols + x] = sum / (sx * sy * 255);
+      }
+      // Distance from each cell to the letter, in cell widths.
+      dist = new Float32Array(cols * rows);
+      var ratio = sy / sx;
+      for (var j = 0; j < cols * rows; j++) dist[j] = cover[j] > 0.3 ? 0 : 1e9;
+      for (var y1 = 0; y1 < rows; y1++) for (var x1 = 0; x1 < cols; x1++) {
+        var k = y1 * cols + x1;
+        if (x1 > 0) dist[k] = Math.min(dist[k], dist[k - 1] + 1);
+        if (y1 > 0) dist[k] = Math.min(dist[k], dist[k - cols] + ratio);
+      }
+      for (var y2 = rows - 1; y2 >= 0; y2--) for (var x2 = cols - 1; x2 >= 0; x2--) {
+        var k2 = y2 * cols + x2;
+        if (x2 < cols - 1) dist[k2] = Math.min(dist[k2], dist[k2 + 1] + 1);
+        if (y2 < rows - 1) dist[k2] = Math.min(dist[k2], dist[k2 + cols] + ratio);
+      }
+      begin();
+    }
+    (document.fonts && document.fonts.load ? document.fonts.load("600 100px 'Inter'") : Promise.resolve())
+      .then(build, build);
+
+    canvas.addEventListener("pointermove", function (e) {
       var r = canvas.getBoundingClientRect();
-      pointer = { u: (e.clientX - r.left) / r.width, v: (e.clientY - r.top) / r.height };
+      pointer = { x: (e.clientX - r.left) / r.width * cols, y: (e.clientY - r.top) / r.height * rows };
     });
-    canvas.parentElement.addEventListener("pointerleave", function () { pointer = null; });
+    canvas.addEventListener("pointerleave", function () { pointer = null; });
+
     function draw(t) {
       var dpr = Math.min(2, window.devicePixelRatio || 1);
       var W = Math.round(canvas.clientWidth * dpr), H = Math.round(canvas.clientHeight * dpr);
-      if (canvas.width !== W) { canvas.width = W; canvas.height = H; }
+      if (canvas.width !== W || canvas.height !== H) { canvas.width = W; canvas.height = H; }
       var ctx = canvas.getContext("2d");
       ctx.clearRect(0, 0, W, H);
-      var cw = W / cols, ch = H / rows;
-      ctx.font = "600 " + Math.round(ch * 0.95) + "px ui-monospace, Menlo, monospace";
+      var cw = W / cols, ch = H / rows, ratio = ch / cw;
+      ctx.font = "600 " + Math.round(ch * 0.9) + "px ui-monospace, Menlo, monospace";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      // One cycle: 2 s before, a 1.6 s sweep, 3 s of glow, a 1 s fade back.
-      var cycle = 7600, k = reduceMotion ? 5000 : t % cycle;
-      var sweep = k < 2000 ? -0.2 : k < 3600 ? (k - 2000) / 1600 * 1.4 - 0.2 : k < 6600 ? 1.2 : 1.2 - (k - 6600) / 1000 * 1.4;
-      pointerFade += ((pointer ? 1 : 0) - pointerFade) * 0.15;
-      if (pointer || pointerFade > 0.02) sweep = -0.2;
-      var glowing = pointer ? true : k >= 2800 && k < 7100;
-      if (tabs.length === 2) { tabs[0].classList.toggle("on", !glowing); tabs[1].classList.toggle("on", glowing); }
-      for (var r = 0; r < rows; r++) {
-        for (var c = 0; c < cols; c++) {
-          var i = r * cols + c, u = c / cols;
-          // How much light has reached this column, soft at the band's edge.
-          var g = Math.max(0, Math.min(1, (sweep - u) / 0.18 + 0.5));
-          if (pointer || pointerFade > 0.02) {
-            var px = pointer ? pointer.u : 0.5, py = pointer ? pointer.v : 0.5;
-            var du = u - px, dv = (r / rows - py) * 0.75;
-            g = Math.max(g, pointerFade * Math.exp(-(du * du + dv * dv) / 0.035));
+      var cx = cols / 2, cy = rows * 0.5;
+      var time = t / 1000;
+      pointerFade += ((pointer ? 1 : 0) - pointerFade) * 0.12;
+      var pa = pointer ? Math.atan2((pointer.y - cy) * ratio, pointer.x - cx) : 0;
+      for (var y = 0; y < rows; y++) {
+        for (var x = 0; x < cols; x++) {
+          var i = y * cols + x;
+          var px = x + 0.5, py = y + 0.5;
+          var cv = cover[i];
+          if (cv > 0.3) {
+            // The letter: dense where it is solid, lighter at its curved edges, with a slow shimmer.
+            var sh = 0.88 + 0.12 * Math.sin(time * 2.6 + x * 0.5 - y * 0.3);
+            ctx.fillStyle = "rgba(255,244,214," + (sh * (0.55 + 0.45 * cv)).toFixed(2) + ")";
+            ctx.fillText(cv > 0.85 ? "@" : cv > 0.6 ? "#" : cv > 0.45 ? "*" : "+", px * cw, py * ch);
+            continue;
           }
-          var v = lum[i] + noise[i] * 0.32 * (1 - g);
-          v = v * (1 + 0.35 * g) + 0.06 * g;
-          v = Math.max(0, Math.min(0.999, v));
-          var chIdx = Math.floor(v * ramp.length);
-          if (chIdx === 0) continue;
-          // Gray before, warm cream to gold after.
-          var R = Math.round(120 + (255 - 120) * g), G = Math.round(126 + (214 - 126) * g * (0.6 + 0.4 * v)), B = Math.round(140 + (128 - 140) * g - 40 * g * (1 - v));
-          ctx.fillStyle = "rgba(" + R + "," + G + "," + B + "," + (0.35 + 0.65 * v) + ")";
-          ctx.fillText(ramp[chIdx], c * cw + cw / 2, r * ch + ch / 2);
+          var dx = px - cx, dy = (py - cy) * ratio;
+          var d = Math.sqrt(dx * dx + dy * dy);
+          var a = Math.atan2(dy, dx);
+          // A thin glow hugging the letter, and narrow rings of light moving outward with soft rays.
+          var glow = Math.exp(-dist[i] / 2.2) * 0.85;
+          var ring = Math.pow(Math.max(0, Math.cos((d - time * 11) * 0.3)), 8) * Math.exp(-d / 70) * 1.15;
+          var rays = Math.pow(0.5 + 0.5 * Math.cos(a * 12 + time * 0.5), 2);
+          var v = glow + ring * (0.35 + 0.65 * rays);
+          if (pointer) {
+            var lean = Math.pow(Math.max(0, Math.cos(a - pa)), 6) * Math.exp(-d / 60);
+            var qx = px - pointer.x, qy = (py - pointer.y) * ratio;
+            v += pointerFade * (0.35 * lean * (0.5 + 0.5 * rays) + 0.6 * Math.exp(-(qx * qx + qy * qy) / 70));
+          }
+          if (v < 0.07) continue;
+          v = Math.min(0.999, v);
+          var idx = Math.max(1, Math.floor(v * halo.length));
+          var warm = Math.min(1, v * 1.3);
+          var G = Math.round(150 + 90 * warm), B = Math.round(50 + 120 * warm * warm);
+          ctx.fillStyle = "rgba(255," + G + "," + B + "," + (0.2 + 0.8 * v).toFixed(2) + ")";
+          ctx.fillText(halo[idx], px * cw, py * ch);
         }
       }
     }
-    function start() {
+
+    function begin() {
       draw(performance.now());
       if (reduceMotion) return;
       var last = 0;
       (function loop(t) {
-        if (visible && t - last > 50) { draw(t); last = t; }
+        if (visible && t - last > 40) { draw(t); last = t; }
         requestAnimationFrame(loop);
       })(0);
       new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }).observe(canvas);
